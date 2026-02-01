@@ -1,0 +1,39 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: proxmox-csi-plugin
+  namespace: csi-proxmox
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: proxmox-csi-plugin
+      version: "0.5.4"
+      sourceRef:
+        kind: HelmRepository
+        name: proxmox-csi-plugin
+        namespace: csi-proxmox
+      interval: 5m
+  releaseName: proxmox-csi-plugin
+  targetNamespace: csi-proxmox
+  install:
+    remediation:
+      remediateLastFailure: true
+  upgrade:
+    remediation:
+      remediateLastFailure: true
+  values:
+    existingConfigSecret: proxmox-csi-plugin
+    existingConfigSecretKey: config.yaml
+    options:
+      enableCapacity: false
+    extraVolumes:
+      - name: proxmox-ca
+        configMap:
+          name: proxmox-ca
+    extraVolumeMounts:
+      - name: proxmox-ca
+        mountPath: /etc/ssl/certs/ca-certificates.crt
+        subPath: ca.crt
+        readOnly: true
