@@ -1,0 +1,243 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dev-base
+  namespace: flux-system
+spec:
+  interval: 10m
+  retryInterval: 1m
+  path: ./infrastructure/development
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  timeout: 10m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dev-core-external-secrets-controller
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: dev-base
+  interval: 10m
+  retryInterval: 1m
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: external-secrets
+      namespace: external-secrets
+  path: ./infrastructure/base/core/external-secrets/controller
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  timeout: 10m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dev-core-external-secrets-config
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: dev-core-external-secrets-controller
+  interval: 10m
+  retryInterval: 1m
+  path: ./infrastructure/development/external-secrets
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dev-core-proxmox-csi-controller
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: dev-base
+  interval: 10m
+  retryInterval: 1m
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: proxmox-csi-plugin
+      namespace: csi-proxmox
+  path: ./infrastructure/development/core/proxmox-csi/controller
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  timeout: 10m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dev-core-metallb-controller
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: dev-base
+  interval: 10m
+  retryInterval: 1m
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: metallb
+      namespace: metallb-system
+  path: ./infrastructure/base/core/metallb/controller
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  timeout: 10m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dev-core-cert-manager-controller
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: dev-base
+  interval: 10m
+  retryInterval: 1m
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: cert-manager
+      namespace: cert-manager
+  path: ./infrastructure/base/core/cert-manager/controller
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  timeout: 10m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dev-core-traefik-controller
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: dev-base
+    - name: dev-core-metallb-controller
+    - name: dev-core-cert-manager-controller
+  interval: 10m
+  retryInterval: 1m
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: traefik
+      namespace: traefik
+  path: ./infrastructure/base/core/traefik/controller
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  timeout: 10m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dev-core-cnpg-controller
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: dev-base
+  interval: 10m
+  retryInterval: 1m
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: cloudnative-pg
+      namespace: cnpg-system
+  path: ./infrastructure/base/core/cnpg/controller
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  timeout: 10m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dev-core-metallb-config
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: dev-core-metallb-controller
+  interval: 10m
+  retryInterval: 1m
+  path: ./infrastructure/base/core/metallb/config
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dev-core-cert-manager-config
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: dev-core-cert-manager-controller
+    - name: dev-core-traefik-controller
+    - name: dev-core-external-secrets-controller
+  interval: 10m
+  retryInterval: 1m
+  path: ./infrastructure/development/core/cert-manager/config
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dev-core-traefik-config
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: dev-core-traefik-controller
+    - name: dev-core-external-secrets-controller
+  interval: 10m
+  retryInterval: 1m
+  path: ./infrastructure/development/core/traefik/config
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dev-core-proxmox-csi-config
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: dev-core-proxmox-csi-controller
+  interval: 10m
+  retryInterval: 1m
+  path: ./infrastructure/base/core/proxmox-csi/config
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
