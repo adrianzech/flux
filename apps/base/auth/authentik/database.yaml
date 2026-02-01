@@ -1,0 +1,16 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: authentik-database
+  namespace: auth
+spec:
+  instances: 3
+
+  storage:
+    size: 10Gi
+    storageClass: "proxmox-csi"
+
+  bootstrap:
+    initdb:
+      database: authentik
+      owner: authentik

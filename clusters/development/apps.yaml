@@ -1,0 +1,22 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dev-apps
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: dev-core-traefik-config
+    - name: dev-core-cert-manager-config
+    - name: dev-core-proxmox-csi-config
+    - name: dev-core-cnpg-controller
+    - name: dev-base
+  interval: 10m
+  retryInterval: 1m
+  path: ./apps/development
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  timeout: 30m
