@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`sso.zech.dev`)
+    - match: Host(`sso.$(DOMAIN)`)
       kind: Rule
       services:
         - name: authentik-server

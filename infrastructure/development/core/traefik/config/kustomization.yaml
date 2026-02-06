@@ -3,4 +3,41 @@ kind: Kustomization
 resources:
   - ../../../../base/core/traefik/config
 patchesStrategicMerge:
-  - patch-external-secret.yaml
+  - patch-infisical-secret.yaml
+configMapGenerator:
+  - name: domain-config
+    literals:
+      - TRAEFIK_DASHBOARD_MATCH=Host(`traefik.zech.dev`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+  - name: infisical-config
+    literals:
+      - INFISICAL_PROJECT_ID=9222b9ff-f97a-4732-b706-89d52a4f71fe
+      - INFISICAL_IDENTITY_ID=1fab823a-c62f-46de-9819-212182e964af
+replacements:
+  - source:
+      kind: ConfigMap
+      name: domain-config
+      fieldPath: data.TRAEFIK_DASHBOARD_MATCH
+    targets:
+      - select:
+          kind: IngressRoute
+          name: traefik-dashboard
+        fieldPaths:
+          - spec.routes.0.match
+  - source:
+      kind: ConfigMap
+      name: infisical-config
+      fieldPath: data.INFISICAL_PROJECT_ID
+    targets:
+      - select:
+          kind: InfisicalSecret
+        fieldPaths:
+          - spec.authentication.kubernetesAuth.secretsScope.projectId
+  - source:
+      kind: ConfigMap
+      name: infisical-config
+      fieldPath: data.INFISICAL_IDENTITY_ID
+    targets:
+      - select:
+          kind: InfisicalSecret
+        fieldPaths:
+          - spec.authentication.kubernetesAuth.identityId

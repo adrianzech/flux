@@ -3,3 +3,51 @@ kind: Kustomization
 resources:
   - ../base
   - ./auth/authentik
+configMapGenerator:
+  - name: domain-config
+    literals:
+      - AUTHENTIK_INGRESS_MATCH=Host(`sso.zech.co`)
+      - AUTHENTIK_HOST=https://sso.zech.co
+  - name: infisical-config
+    literals:
+      - INFISICAL_PROJECT_ID=9222b9ff-f97a-4732-b706-89d52a4f71fe
+      - INFISICAL_IDENTITY_ID=0e3affd0-0d73-4b99-8b1c-04ef2ef76188
+replacements:
+  - source:
+      kind: ConfigMap
+      name: domain-config
+      fieldPath: data.AUTHENTIK_INGRESS_MATCH
+    targets:
+      - select:
+          kind: IngressRoute
+          name: authentik-ingress
+        fieldPaths:
+          - spec.routes.0.match
+  - source:
+      kind: ConfigMap
+      name: domain-config
+      fieldPath: data.AUTHENTIK_HOST
+    targets:
+      - select:
+          kind: HelmRelease
+          name: authentik
+        fieldPaths:
+          - spec.values.authentik.env.0.value
+  - source:
+      kind: ConfigMap
+      name: infisical-config
+      fieldPath: data.INFISICAL_PROJECT_ID
+    targets:
+      - select:
+          kind: InfisicalSecret
+        fieldPaths:
+          - spec.authentication.kubernetesAuth.secretsScope.projectId
+  - source:
+      kind: ConfigMap
+      name: infisical-config
+      fieldPath: data.INFISICAL_IDENTITY_ID
+    targets:
+      - select:
+          kind: InfisicalSecret
+        fieldPaths:
+          - spec.authentication.kubernetesAuth.identityId

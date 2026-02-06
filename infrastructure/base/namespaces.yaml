@@ -50,9 +50,9 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: external-secrets
+  name: infisical
   labels:
-    name: external-secrets
+    name: infisical
     pod-security.kubernetes.io/enforce: baseline
 ---
 apiVersion: v1

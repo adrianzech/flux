@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: authentik
-      version: "2025.12.2"
+      version: "2025.12.3"
       sourceRef:
         kind: HelmRepository
         name: authentik
@@ -30,12 +30,12 @@ spec:
 
     - kind: Secret
       name: authentik-email-credentials
-      valuesKey: username
+      valuesKey: AUTHENTIK_EMAIL_USERNAME
       targetPath: email.username
 
     - kind: Secret
       name: authentik-email-credentials
-      valuesKey: password
+      valuesKey: AUTHENTIK_EMAIL_PASSWORD
       targetPath: email.password
 
   values:
@@ -53,7 +53,7 @@ spec:
     authentik:
       env:
         - name: AUTHENTIK_HOST
-          value: https://sso.zech.dev
+          value: https://sso.$(DOMAIN)
 
       error_reporting:
         enabled: true

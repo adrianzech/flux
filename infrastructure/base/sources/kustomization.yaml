@@ -4,7 +4,7 @@ resources:
   - authentik-repository.yaml
   - cert-manager-repository.yaml
   - cnpg-repository.yaml
-  - external-secrets-repository.yaml
+  - infisical-repository.yaml
   - metallb-repository.yaml
   - proxmox-csi-repository.yaml
   - traefik-repository.yaml

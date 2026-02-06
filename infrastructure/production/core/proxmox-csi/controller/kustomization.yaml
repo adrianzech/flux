@@ -3,4 +3,28 @@ kind: Kustomization
 resources:
   - ../../../../base/core/proxmox-csi/controller
 patchesStrategicMerge:
-  - patch-external-secret.yaml
+  - patch-infisical-secret.yaml
+configMapGenerator:
+  - name: infisical-config
+    literals:
+      - INFISICAL_PROJECT_ID=9222b9ff-f97a-4732-b706-89d52a4f71fe
+      - INFISICAL_IDENTITY_ID=0e3affd0-0d73-4b99-8b1c-04ef2ef76188
+replacements:
+  - source:
+      kind: ConfigMap
+      name: infisical-config
+      fieldPath: data.INFISICAL_PROJECT_ID
+    targets:
+      - select:
+          kind: InfisicalSecret
+        fieldPaths:
+          - spec.authentication.kubernetesAuth.secretsScope.projectId
+  - source:
+      kind: ConfigMap
+      name: infisical-config
+      fieldPath: data.INFISICAL_IDENTITY_ID
+    targets:
+      - select:
+          kind: InfisicalSecret
+        fieldPaths:
+          - spec.authentication.kubernetesAuth.identityId
