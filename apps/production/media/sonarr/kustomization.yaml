@@ -15,6 +15,12 @@ patches:
         namespace: media
       spec:
         routes:
+          - match: Host(`sonarr.zech.co`) && PathPrefix(`/outpost.goauthentik.io/`)
+            kind: Rule
+            services:
+              - name: authentik-server
+                namespace: auth
+                port: http
           - match: Host(`sonarr.zech.co`)
             kind: Rule
             services:

@@ -7,6 +7,12 @@ spec:
   entryPoints:
     - websecure
   routes:
+    - match: Host(`sonarr.$(DOMAIN)`) && PathPrefix(`/outpost.goauthentik.io/`)
+      kind: Rule
+      services:
+        - name: authentik-server
+          namespace: auth
+          port: http
     - match: Host(`sonarr.$(DOMAIN)`)
       kind: Rule
       services:
