@@ -62,3 +62,11 @@ metadata:
   labels:
     name: auth
     pod-security.kubernetes.io/enforce: baseline
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: media
+  labels:
+    name: media
+    pod-security.kubernetes.io/enforce: baseline
