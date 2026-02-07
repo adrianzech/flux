@@ -124,7 +124,7 @@ spec:
       kind: HelmRelease
       name: traefik
       namespace: traefik
-  path: ./infrastructure/base/core/traefik/controller
+  path: ./infrastructure/development/core/traefik/controller
   prune: true
   sourceRef:
     kind: GitRepository
@@ -165,7 +165,7 @@ spec:
     - name: dev-core-metallb-controller
   interval: 10m
   retryInterval: 1m
-  path: ./infrastructure/base/core/metallb/config
+  path: ./infrastructure/development/core/metallb/config
   prune: true
   sourceRef:
     kind: GitRepository

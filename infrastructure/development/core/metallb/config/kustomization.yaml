@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../../base/core/metallb/config
+patches:
+  - target:
+      kind: IPAddressPool
+      name: pool
+      namespace: metallb-system
+    patch: |-
+      apiVersion: metallb.io/v1beta1
+      kind: IPAddressPool
+      metadata:
+        name: pool
+        namespace: metallb-system
+      spec:
+        addresses:
+          - 10.0.30.100-10.0.30.199
