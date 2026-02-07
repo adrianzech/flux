@@ -6,46 +6,11 @@ resources:
 patchesStrategicMerge:
   - patch-infisical-secret.yaml
 configMapGenerator:
-  - name: domain-config
-    literals:
-      - CERT_WILDCARD_CN=*.zech.dev
-      - CERT_WILDCARD_DNS0=*.zech.dev
-      - CERT_WILDCARD_DNS1=zech.dev
   - name: infisical-config
     literals:
       - INFISICAL_PROJECT_ID=9222b9ff-f97a-4732-b706-89d52a4f71fe
       - INFISICAL_IDENTITY_ID=1fab823a-c62f-46de-9819-212182e964af
 replacements:
-  - source:
-      kind: ConfigMap
-      name: domain-config
-      fieldPath: data.CERT_WILDCARD_CN
-    targets:
-      - select:
-          kind: Certificate
-          name: wildcard-certificate
-        fieldPaths:
-          - spec.commonName
-  - source:
-      kind: ConfigMap
-      name: domain-config
-      fieldPath: data.CERT_WILDCARD_DNS0
-    targets:
-      - select:
-          kind: Certificate
-          name: wildcard-certificate
-        fieldPaths:
-          - spec.dnsNames.0
-  - source:
-      kind: ConfigMap
-      name: domain-config
-      fieldPath: data.CERT_WILDCARD_DNS1
-    targets:
-      - select:
-          kind: Certificate
-          name: wildcard-certificate
-        fieldPaths:
-          - spec.dnsNames.1
   - source:
       kind: ConfigMap
       name: infisical-config

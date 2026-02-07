@@ -199,6 +199,7 @@ metadata:
 spec:
   dependsOn:
     - name: dev-core-traefik-controller
+    - name: dev-core-cert-manager-config
     - name: dev-core-infisical-operator
   interval: 10m
   retryInterval: 1m

@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
   - issuer-secret.yaml
   - issuer.yaml
-  - wildcard-certificate.yaml
