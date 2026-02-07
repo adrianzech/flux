@@ -6,7 +6,7 @@ This repository defines a Flux CD–managed GitOps setup for Kubernetes with cle
 
 - Predictable, safe GitOps deployments for dev and prod clusters
 - Strict separation of environment concerns via overlays
-- No plaintext secrets in Git; secrets come from HashiCorp Vault
+- No plaintext secrets in Git; secrets are synced from Infisical
 - All deployable components managed via Flux HelmRelease resources
 
 ## Repository Layout
@@ -50,19 +50,35 @@ All deployable components are managed via `HelmRelease` resources and sourced fr
 
 Kustomizations are scoped, explicit, and may use `dependsOn` to ensure correct ordering.
 
-## Secret Management (Vault)
+## Secret Management (Infisical)
 
-Kubernetes consumes secrets via External Secrets Operator or the Vault CSI driver. Vault paths are environment-scoped:
+Secrets are synced into Kubernetes using the Infisical Secrets Operator (`InfisicalSecret` resources).
 
-```text
-kv/
-└── kubernetes/
-    ├── production/
-    │   └── <app-name>/
-    │       ├── username
-    │       └── password
-    └── development/
-        └── <app-name>/
-            ├── username
-            └── password
+Environment separation is enforced via `envSlug` (`dev` vs `prod`) and by keeping development and production clusters fully isolated.
+
+### Required Infisical Secrets
+
+The following secrets must exist in Infisical for both `dev` and `prod` (unless explicitly noted). Paths are the `secretsPath` configured in this repo.
+
+- `/Cert-Manager`
+- `CLOUDFLARE_API_TOKEN` (used by cert-manager Cloudflare DNS-01 solver)
+- `/Traefik`
+- `CLOUDFLARE_API_TOKEN` (synced for Traefik; keep separate from cert-manager)
+- `/Proxmox-CSI`
+- `PROXMOX_API_TOKEN_ID`
+- `PROXMOX_API_TOKEN_SECRET`
+- `/Authentik`
+- `AUTHENTIK_SECRET_KEY`
+- `AUTHENTIK_EMAIL_USERNAME`
+- `AUTHENTIK_EMAIL_PASSWORD`
+
+## Flux Bootstrap
+
+This repository follows Flux bootstrap conventions with separate paths per cluster.
+
+```bash
+export GITHUB_TOKEN="..."
+
+flux bootstrap github --token-auth --owner=adrianzech --repository=flux --branch=main --path=clusters/development
+flux bootstrap github --token-auth --owner=adrianzech --repository=flux --branch=main --path=clusters/production
 ```
