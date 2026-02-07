@@ -22,7 +22,6 @@ metadata:
 spec:
   dependsOn:
     - name: dev-base
-    - name: dev-core-infisical-operator
   interval: 10m
   retryInterval: 1m
   healthChecks:
@@ -46,6 +45,7 @@ metadata:
 spec:
   dependsOn:
     - name: dev-base
+    - name: dev-core-infisical-operator
   interval: 10m
   retryInterval: 1m
   healthChecks:
