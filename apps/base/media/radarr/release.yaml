@@ -1,0 +1,59 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: radarr
+  namespace: media
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-media
+        namespace: media
+  values:
+    controllers:
+      radarr:
+        containers:
+          app:
+            image:
+              repository: linuxserver/radarr
+              tag: "6.0.4"
+
+            env:
+              TZ: "Europe/Vienna"
+              PUID: "1000"
+              PGID: "1000"
+              RADARR__AUTH__METHOD: External
+              RADARR__AUTH__REQUIRED: DisabledForLocalAddresses
+
+    service:
+      app:
+        controller: radarr
+        ports:
+          http:
+            port: 7878
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: radarr-config-pvc
+        globalMounts:
+          - path: /config
+
+      media-movies:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: nfs-media-movies-pvc
+        globalMounts:
+          - path: /movies
+
+      media-downloads:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: nfs-media-downloads-pvc
+        globalMounts:
+          - path: /downloads

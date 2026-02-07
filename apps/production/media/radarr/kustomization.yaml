@@ -1,0 +1,31 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../base/media/radarr
+patches:
+  - target:
+      kind: IngressRoute
+      name: radarr-ingress
+      namespace: media
+    patch: |-
+      apiVersion: traefik.io/v1alpha1
+      kind: IngressRoute
+      metadata:
+        name: radarr-ingress
+        namespace: media
+      spec:
+        routes:
+          - match: Host(`radarr.zech.co`) && PathPrefix(`/outpost.goauthentik.io/`)
+            kind: Rule
+            services:
+              - name: authentik-server
+                namespace: auth
+                port: http
+          - match: Host(`radarr.zech.co`)
+            kind: Rule
+            services:
+              - name: radarr
+                port: 7878
+            middlewares:
+              - name: authentik
+                namespace: traefik
