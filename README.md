@@ -86,11 +86,24 @@ The following secrets must exist in Infisical for both `dev` and `prod` (unless 
 
 ## Flux Bootstrap
 
-This repository follows Flux bootstrap conventions with separate paths per cluster.
+This repository follows Flux bootstrap conventions with separate paths per cluster. Bootstrap is typically run via Infisical so the GitHub token does not need to be exported in your shell.
+
+### Production
 
 ```bash
-export GITHUB_TOKEN="..."
+infisical run \
+  --projectId 9222b9ff-f97a-4732-b706-89d52a4f71fe \
+  --env prod \
+  --path "/Bootstrap" \
+  -- flux bootstrap github --token-auth --owner=adrianzech --repository=flux --branch=main --path=clusters/production
+```
 
-flux bootstrap github --token-auth --owner=adrianzech --repository=flux --branch=main --path=clusters/development
-flux bootstrap github --token-auth --owner=adrianzech --repository=flux --branch=main --path=clusters/production
+### Development
+
+```bash
+infisical run \
+  --projectId 9222b9ff-f97a-4732-b706-89d52a4f71fe \
+  --env dev \
+  --path "/Bootstrap" \
+  -- flux bootstrap github --token-auth --owner=adrianzech --repository=flux --branch=main --path=clusters/development
 ```
