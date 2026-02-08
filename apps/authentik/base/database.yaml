@@ -7,7 +7,7 @@ spec:
   instances: 3
 
   storage:
-    size: 10Gi
+    size: 5Gi
     storageClass: "proxmox-csi"
 
   bootstrap:
