@@ -4,24 +4,43 @@ metadata:
   name: unifi-network-application-mongodb-init
   namespace: unifi
 data:
-  init-mongo.sh: |
-    #!/bin/bash
+  init-mongo.js: |
+    const authDb = process.env.MONGO_AUTHSOURCE || "admin";
+    const rootUser = process.env.MONGO_INITDB_ROOT_USERNAME;
+    const rootPass = process.env.MONGO_INITDB_ROOT_PASSWORD;
+    const appUser = process.env.MONGO_USER;
+    const appPass = process.env.MONGO_PASS;
+    const dbName = process.env.MONGO_DBNAME;
 
-    if which mongosh > /dev/null 2>&1; then
-      mongo_init_bin='mongosh'
-    else
-      mongo_init_bin='mongo'
-    fi
-    "${mongo_init_bin}" <<EOF
-    use ${MONGO_AUTHSOURCE}
-    db.auth("${MONGO_INITDB_ROOT_USERNAME}", "${MONGO_INITDB_ROOT_PASSWORD}")
-    db.createUser({
-      user: "${MONGO_USER}",
-      pwd: "${MONGO_PASS}",
-      roles: [
-        { db: "${MONGO_DBNAME}", role: "dbOwner" },
-        { db: "${MONGO_DBNAME}_stat", role: "dbOwner" },
-        { db: "${MONGO_DBNAME}_audit", role: "dbOwner" }
-      ]
-    })
-    EOF
+    if (!rootUser || !rootPass) {
+      throw new Error("missing root credentials");
+    }
+    if (!appUser || !appPass || !dbName) {
+      throw new Error("missing app credentials");
+    }
+
+    const admin = db.getSiblingDB(authDb);
+    if (!admin.auth(rootUser, rootPass)) {
+      throw new Error("root auth failed");
+    }
+
+    const roles = [
+      { db: dbName, role: "dbOwner" },
+      { db: dbName + "_stat", role: "dbOwner" },
+      { db: dbName + "_audit", role: "dbOwner" }
+    ];
+
+    if (admin.getUser(appUser)) {
+      admin.updateUser(appUser, {
+        pwd: appPass,
+        roles,
+        mechanisms: ["SCRAM-SHA-1", "SCRAM-SHA-256"]
+      });
+    } else {
+      admin.createUser({
+        user: appUser,
+        pwd: appPass,
+        roles,
+        mechanisms: ["SCRAM-SHA-1", "SCRAM-SHA-256"]
+      });
+    }

@@ -75,7 +75,7 @@ spec:
         enabled: true
         type: configMap
         name: unifi-network-application-mongodb-init
-        defaultMode: 0755
+        defaultMode: 0644
         globalMounts:
-          - path: /docker-entrypoint-initdb.d/init-mongo.sh
-            subPath: init-mongo.sh
+          - path: /docker-entrypoint-initdb.d/init-mongo.js
+            subPath: init-mongo.js
