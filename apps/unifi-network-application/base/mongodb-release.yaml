@@ -1,0 +1,75 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: unifi-network-application-mongodb
+  namespace: unifi
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-media
+        namespace: media
+  values:
+    controllers:
+      unifi-network-application-mongodb:
+        containers:
+          app:
+            image:
+              repository: mongo
+              tag: "8.2.4"
+            env:
+              - name: MONGO_AUTHSOURCE
+                value: admin
+              - name: MONGO_INITDB_ROOT_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: unifi-network-application-mongodb-env
+                    key: MONGO_INITDB_ROOT_USERNAME
+              - name: MONGO_INITDB_ROOT_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: unifi-network-application-mongodb-env
+                    key: MONGO_INITDB_ROOT_PASSWORD
+              - name: MONGO_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: unifi-network-application-mongodb-env
+                    key: MONGO_USER
+              - name: MONGO_PASS
+                valueFrom:
+                  secretKeyRef:
+                    name: unifi-network-application-mongodb-env
+                    key: MONGO_PASS
+              - name: MONGO_DBNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: unifi-network-application-mongodb-env
+                    key: MONGO_DBNAME
+
+    service:
+      app:
+        controller: unifi-network-application-mongodb
+        ports:
+          mongo:
+            port: 27017
+
+    persistence:
+      data:
+        enabled: true
+        existingClaim: unifi-network-application-mongodb-pvc
+        globalMounts:
+          - path: /data/db
+
+      init-script:
+        enabled: true
+        type: configMap
+        name: unifi-network-application-mongodb-init
+        defaultMode: 0755
+        globalMounts:
+          - path: /docker-entrypoint-initdb.d/init-mongo.sh
+            subPath: init-mongo.sh

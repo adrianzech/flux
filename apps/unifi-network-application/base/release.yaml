@@ -1,0 +1,90 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: unifi-network-application
+  namespace: unifi
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-media
+        namespace: media
+  values:
+    controllers:
+      unifi-network-application:
+        containers:
+          app:
+            image:
+              repository: linuxserver/unifi-network-application
+              tag: "10.0.162"
+            env:
+              - name: TZ
+                value: "Europe/Vienna"
+              - name: PUID
+                value: "1000"
+              - name: PGID
+                value: "1000"
+
+              - name: MONGO_HOST
+                value: unifi-network-application-mongodb
+              - name: MONGO_PORT
+                value: "27017"
+              - name: MONGO_AUTHSOURCE
+                value: admin
+              - name: MONGO_DBNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: unifi-network-application-mongodb-env
+                    key: MONGO_DBNAME
+              - name: MONGO_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: unifi-network-application-mongodb-env
+                    key: MONGO_USER
+              - name: MONGO_PASS
+                valueFrom:
+                  secretKeyRef:
+                    name: unifi-network-application-mongodb-env
+                    key: MONGO_PASS
+
+    service:
+      app:
+        controller: unifi-network-application
+        type: LoadBalancer
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: "${UNIFI_LB_IP}"
+        ports:
+          https:
+            port: 8443
+          inform:
+            port: 8080
+          stun:
+            port: 3478
+            protocol: UDP
+          discovery:
+            port: 10001
+            protocol: UDP
+          l2discovery:
+            port: 1900
+            protocol: UDP
+          portal-https:
+            port: 8843
+          portal-http:
+            port: 8880
+          speedtest:
+            port: 6789
+          syslog:
+            port: 5514
+            protocol: UDP
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: unifi-network-application-config-pvc
+        globalMounts:
+          - path: /config

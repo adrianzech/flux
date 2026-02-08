@@ -70,3 +70,11 @@ metadata:
   labels:
     name: media
     pod-security.kubernetes.io/enforce: baseline
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: unifi
+  labels:
+    name: unifi
+    pod-security.kubernetes.io/enforce: baseline

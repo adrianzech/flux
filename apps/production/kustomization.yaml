@@ -6,3 +6,4 @@ resources:
   - ../radarr/base
   - ../sabnzbd/base
   - ../prowlarr/base
+  - ../unifi-network-application/base
