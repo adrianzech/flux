@@ -22,6 +22,11 @@ spec:
             image:
               repository: mongo
               tag: "8.2.4"
+            args:
+              - --bind_ip_all
+            ports:
+              mongo:
+                containerPort: 27017
             env:
               - name: MONGO_AUTHSOURCE
                 value: admin
