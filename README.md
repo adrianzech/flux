@@ -72,17 +72,21 @@ Environment separation is enforced via `envSlug` (`dev` vs `prod`) and by keepin
 
 The following secrets must exist in Infisical for both `dev` and `prod` (unless explicitly noted). Paths are the `secretsPath` configured in this repo.
 
-- `/Cert-Manager`
-- `CLOUDFLARE_API_TOKEN` (used by cert-manager Cloudflare DNS-01 solver)
-- `/Traefik`
-- `CLOUDFLARE_API_TOKEN` (synced for Traefik; keep separate from cert-manager)
-- `/Proxmox-CSI`
-- `PROXMOX_API_TOKEN_ID`
-- `PROXMOX_API_TOKEN_SECRET`
-- `/Authentik`
-- `AUTHENTIK_SECRET_KEY`
-- `AUTHENTIK_EMAIL_USERNAME`
-- `AUTHENTIK_EMAIL_PASSWORD`
+Format: each top-level entry is an Infisical `secretsPath` (folder); the indented items are secret keys that must exist within that folder.
+
+```text
+/Cert-Manager
+  - CLOUDFLARE_API_TOKEN
+/Traefik
+  - CLOUDFLARE_API_TOKEN
+/Proxmox-CSI
+  - PROXMOX_API_TOKEN_ID
+  - PROXMOX_API_TOKEN_SECRET
+/Authentik
+  - AUTHENTIK_SECRET_KEY
+  - AUTHENTIK_EMAIL_USERNAME
+  - AUTHENTIK_EMAIL_PASSWORD
+```
 
 ## Flux Bootstrap
 
