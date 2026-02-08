@@ -25,8 +25,9 @@ spec:
             args:
               - --bind_ip_all
             ports:
-              mongo:
+              - name: mongo
                 containerPort: 27017
+                protocol: TCP
             env:
               - name: MONGO_AUTHSOURCE
                 value: admin
