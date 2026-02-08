@@ -5,3 +5,4 @@ resources:
   - ../sonarr/base
   - ../radarr/base
   - ../sabnzbd/base
+  - ../prowlarr/base
