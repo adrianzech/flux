@@ -1,0 +1,14 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: jellyseerr-ingress
+  namespace: media
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`jellyseerr.${DOMAIN}`)
+      kind: Rule
+      services:
+        - name: jellyseerr
+          port: 5055

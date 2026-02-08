@@ -7,4 +7,5 @@ resources:
   - ../sabnzbd/base
   - ../prowlarr/base
   - ../bazarr/base
+  - ../jellyseerr/base
   - ../unifi-network-application/base
