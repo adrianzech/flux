@@ -6,6 +6,7 @@ metadata:
   namespace: unifi
 spec:
   insecureSkipVerify: true
+  disableHTTP2: true
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
