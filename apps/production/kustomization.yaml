@@ -4,3 +4,4 @@ resources:
   - ../authentik/base
   - ../sonarr/base
   - ../radarr/base
+  - ../sabnzbd/base
