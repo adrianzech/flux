@@ -29,7 +29,7 @@ spec:
       kind: HelmRelease
       name: infisical-secrets-operator
       namespace: infisical
-  path: ./infrastructure/base/core/infisical-operator/controller
+  path: ./infrastructure/infisical-operator/base/controller
   prune: true
   sourceRef:
     kind: GitRepository
@@ -44,6 +44,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: prod-vars
     - name: prod-base
     - name: prod-core-infisical-operator
   interval: 10m
@@ -53,11 +54,15 @@ spec:
       kind: HelmRelease
       name: proxmox-csi-plugin
       namespace: csi-proxmox
-  path: ./infrastructure/production/core/proxmox-csi/controller
+  path: ./infrastructure/proxmox-csi/base/controller
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: flux-cluster-vars
   wait: true
   timeout: 10m
 ---
@@ -76,7 +81,7 @@ spec:
       kind: HelmRelease
       name: metallb
       namespace: metallb-system
-  path: ./infrastructure/base/core/metallb/controller
+  path: ./infrastructure/metallb/base/controller
   prune: true
   sourceRef:
     kind: GitRepository
@@ -99,7 +104,7 @@ spec:
       kind: HelmRelease
       name: cert-manager
       namespace: cert-manager
-  path: ./infrastructure/base/core/cert-manager/controller
+  path: ./infrastructure/cert-manager/base/controller
   prune: true
   sourceRef:
     kind: GitRepository
@@ -114,6 +119,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: prod-vars
     - name: prod-base
     - name: prod-core-metallb-controller
     - name: prod-core-cert-manager-controller
@@ -124,11 +130,15 @@ spec:
       kind: HelmRelease
       name: traefik
       namespace: traefik
-  path: ./infrastructure/production/core/traefik/controller
+  path: ./infrastructure/traefik/base/controller
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: flux-cluster-vars
   wait: true
   timeout: 10m
 ---
@@ -147,7 +157,7 @@ spec:
       kind: HelmRelease
       name: cloudnative-pg
       namespace: cnpg-system
-  path: ./infrastructure/base/core/cnpg/controller
+  path: ./infrastructure/cnpg/base/controller
   prune: true
   sourceRef:
     kind: GitRepository
@@ -162,14 +172,19 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: prod-vars
     - name: prod-core-metallb-controller
   interval: 10m
   retryInterval: 1m
-  path: ./infrastructure/production/core/metallb/config
+  path: ./infrastructure/metallb/base/config
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: flux-cluster-vars
   wait: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -179,16 +194,21 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: prod-vars
     - name: prod-core-cert-manager-controller
     - name: prod-core-traefik-controller
     - name: prod-core-infisical-operator
   interval: 10m
   retryInterval: 1m
-  path: ./infrastructure/production/core/cert-manager/config
+  path: ./infrastructure/cert-manager/base/config
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: flux-cluster-vars
   wait: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -198,16 +218,21 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: prod-vars
     - name: prod-core-traefik-controller
     - name: prod-core-cert-manager-config
     - name: prod-core-infisical-operator
   interval: 10m
   retryInterval: 1m
-  path: ./infrastructure/production/core/traefik/config
+  path: ./infrastructure/traefik/base/config
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: flux-cluster-vars
   wait: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -220,7 +245,7 @@ spec:
     - name: prod-core-proxmox-csi-controller
   interval: 10m
   retryInterval: 1m
-  path: ./infrastructure/base/core/proxmox-csi/config
+  path: ./infrastructure/proxmox-csi/base/config
   prune: true
   sourceRef:
     kind: GitRepository

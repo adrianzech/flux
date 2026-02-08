@@ -5,7 +5,7 @@ This repository defines a Flux CD–managed GitOps setup for Kubernetes with cle
 ## Goals
 
 - Predictable, safe GitOps deployments for dev and prod clusters
-- Strict separation of environment concerns via overlays
+- Strict separation of environment concerns via Flux Kustomizations and post-build substitutions
 - No plaintext secrets in Git; secrets are synced from Infisical
 - All deployable components managed via Flux HelmRelease resources
 
@@ -14,25 +14,35 @@ This repository defines a Flux CD–managed GitOps setup for Kubernetes with cle
 ```text
 .
 ├── apps
-│   ├── base
 │   ├── development
-│   └── production
+│   ├── production
+│   └── <app-name>
+│       └── base
 ├── clusters
 │   ├── development
 │   │   ├── flux-system
+│   │   ├── vars.yaml
+│   │   ├── vars
+│   │   │   └── cluster-vars.yaml
 │   │   ├── infrastructure.yaml
 │   │   └── kustomization.yaml
 │   └── production
 │       ├── flux-system
+│       ├── vars.yaml
+│       ├── vars
+│       │   └── cluster-vars.yaml
 │       ├── infrastructure.yaml
 │       └── kustomization.yaml
 ├── infrastructure
 │   ├── base
-│   │   ├── core
 │   │   ├── namespaces.yaml
 │   │   └── sources
 │   ├── development
-│   └── production
+│   ├── production
+│   └── <component-name>
+│       ├── base
+│       │   ├── controller
+│       │   └── config
 ```
 
 ### Structure Principles
@@ -40,8 +50,10 @@ This repository defines a Flux CD–managed GitOps setup for Kubernetes with cle
 - `clusters/*` only wires Flux to a cluster and its top-level Kustomizations
 - `infrastructure/base` contains reusable, environment-agnostic components
 - `infrastructure/{development,production}` only override or extend `base`
-- `apps/base` contains shared app manifests
-- `apps/{development,production}` only override or extend `apps/base`
+- Infrastructure components live under `infrastructure/<component-name>/base/{controller,config}` and are wired into clusters via Flux `Kustomization.spec.path`
+- `apps/<app-name>/base` contains app manifests
+- `apps/{development,production}` are selector layers that choose which apps get deployed per cluster
+- Environment-specific values (domains, IPs, Infisical identity/env) are injected via Flux `Kustomization.spec.postBuild.substituteFrom` (see `clusters/<env>/vars/cluster-vars.yaml`)
 - No HelmRelease, Secret, or Namespace is defined directly under `clusters/`
 
 ## Flux Usage

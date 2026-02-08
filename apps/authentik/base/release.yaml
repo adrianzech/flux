@@ -1,0 +1,78 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: authentik
+  namespace: auth
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: authentik
+      version: "2025.12.3"
+      sourceRef:
+        kind: HelmRepository
+        name: authentik
+        namespace: auth
+      interval: 5m
+  valuesFrom:
+    - kind: Secret
+      name: authentik-secret-key
+      valuesKey: AUTHENTIK_SECRET_KEY
+      targetPath: authentik.secret_key
+      optional: false
+
+    - kind: Secret
+      name: authentik-database-app
+      valuesKey: password
+      targetPath: authentik.postgresql.password
+      optional: false
+
+    - kind: Secret
+      name: authentik-email-credentials
+      valuesKey: AUTHENTIK_EMAIL_USERNAME
+      targetPath: email.username
+
+    - kind: Secret
+      name: authentik-email-credentials
+      valuesKey: AUTHENTIK_EMAIL_PASSWORD
+      targetPath: email.password
+
+  values:
+    server:
+      service:
+        main:
+          enabled: true
+          type: ClusterIP
+          ports:
+            http:
+              port: 80
+              targetPort: 9000
+              protocol: TCP
+
+    authentik:
+      env:
+        - name: AUTHENTIK_HOST
+          value: https://sso.${DOMAIN}
+
+      error_reporting:
+        enabled: true
+
+      postgresql:
+        host: authentik-database-rw.auth.svc.cluster.local
+        user: authentik
+        database: authentik
+
+    postgresql:
+      enabled: false
+
+    redis:
+      enabled: true
+
+    email:
+      host: "smtp.eu.mailgun.org"
+      port: 587
+      use_tls: true
+      use_ssl: false
+      timeout: 15m
+      from: "sso@zech.co"

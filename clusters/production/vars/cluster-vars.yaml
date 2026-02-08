@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flux-cluster-vars
+  namespace: flux-system
+data:
+  DOMAIN: zech.co
+  INFISICAL_PROJECT_ID: 9222b9ff-f97a-4732-b706-89d52a4f71fe
+  INFISICAL_IDENTITY_ID: 0e3affd0-0d73-4b99-8b1c-04ef2ef76188
+  INFISICAL_ENV_SLUG: prod
+  TRAEFIK_LB_IP: 10.0.20.100
+  METALLB_POOL_RANGE: 10.0.20.100-10.0.20.199

@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - nfs-volumes.yaml
   - nfs-storageclass.yaml
+  - media-pvcs.yaml

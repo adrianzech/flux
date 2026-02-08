@@ -6,6 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: prod-vars
     - name: prod-core-traefik-config
     - name: prod-core-cert-manager-config
     - name: prod-core-proxmox-csi-config
@@ -18,5 +19,9 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: flux-cluster-vars
   wait: true
   timeout: 30m
