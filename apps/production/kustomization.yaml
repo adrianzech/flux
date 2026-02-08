@@ -8,4 +8,5 @@ resources:
   - ../prowlarr/base
   - ../bazarr/base
   - ../jellyseerr/base
+  - ../jellystat/base
   - ../unifi-network-application/base
