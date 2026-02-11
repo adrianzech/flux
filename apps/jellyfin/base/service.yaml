@@ -4,8 +4,7 @@ metadata:
   name: jellyfin-external
   namespace: media
 spec:
-  type: ExternalName
-  externalName: nas.local.zech.co
+  type: ClusterIP
   ports:
     - name: http
       port: 8096
