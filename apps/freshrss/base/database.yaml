@@ -1,0 +1,16 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: freshrss-database
+  namespace: media
+spec:
+  instances: 1
+
+  storage:
+    size: 1Gi
+    storageClass: "proxmox-csi"
+
+  bootstrap:
+    initdb:
+      database: freshrss
+      owner: freshrss

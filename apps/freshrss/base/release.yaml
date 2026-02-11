@@ -1,0 +1,58 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: freshrss
+  namespace: media
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-media
+        namespace: media
+  values:
+    controllers:
+      freshrss:
+        containers:
+          app:
+            image:
+              repository: linuxserver/freshrss
+              tag: "1.28.1"
+            env:
+              - name: TZ
+                value: Europe/Vienna
+              - name: PUID
+                value: "1000"
+              - name: PGID
+                value: "1000"
+              - name: DATABASE_HOST
+                value: freshrss-database-rw.media.svc.cluster.local
+              - name: DATABASE_PORT
+                value: "5432"
+              - name: DATABASE_NAME
+                value: freshrss
+              - name: DATABASE_USER
+                value: freshrss
+              - name: DATABASE_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: freshrss-database-app
+                    key: password
+
+    service:
+      app:
+        controller: freshrss
+        ports:
+          http:
+            port: 80
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: freshrss-config-pvc
+        globalMounts:
+          - path: /config
