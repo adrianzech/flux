@@ -48,3 +48,10 @@ spec:
         existingClaim: nfs-media-tv-pvc
         globalMounts:
           - path: /tv
+
+      media-movies:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: nfs-media-movies-pvc
+        globalMounts:
+          - path: /movies
