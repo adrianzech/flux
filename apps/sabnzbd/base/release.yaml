@@ -17,6 +17,29 @@ spec:
   values:
     controllers:
       sabnzbd:
+        initContainers:
+          host-whitelist:
+            image:
+              repository: alpine
+              tag: "3.21.3"
+            command:
+              - /bin/sh
+              - -ec
+              - |
+                file="/config/sabnzbd.ini"
+                whitelist="localhost,127.0.0.1,sabnzbd.${DOMAIN}"
+
+                if [ ! -f "$file" ]; then
+                  echo "sabnzbd.ini not found at $file; skipping host_whitelist patch"
+                  exit 0
+                fi
+
+                if grep -qE '^host_whitelist[[:space:]]*=' "$file"; then
+                  sed -i "s|^host_whitelist[[:space:]]*=.*|host_whitelist = ${whitelist}|" "$file"
+                else
+                  printf '\nhost_whitelist = %s\n' "$whitelist" >> "$file"
+                fi
+
         containers:
           app:
             image:
