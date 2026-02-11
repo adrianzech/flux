@@ -1,0 +1,46 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: karakeep-meilisearch
+  namespace: media
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-media
+        namespace: media
+  values:
+    controllers:
+      karakeep-meilisearch:
+        containers:
+          app:
+            image:
+              repository: getmeili/meilisearch
+              tag: "v1.13.3"
+            env:
+              - name: MEILI_MASTER_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: karakeep-secrets
+                    key: MEILI_MASTER_KEY
+              - name: MEILI_NO_ANALYTICS
+                value: "true"
+
+    service:
+      app:
+        controller: karakeep-meilisearch
+        ports:
+          http:
+            port: 7700
+
+    persistence:
+      data:
+        enabled: true
+        existingClaim: karakeep-meilisearch-pvc
+        globalMounts:
+          - path: /meili_data

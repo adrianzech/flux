@@ -1,0 +1,38 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: karakeep-chrome
+  namespace: media
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-media
+        namespace: media
+  values:
+    controllers:
+      karakeep-chrome:
+        containers:
+          app:
+            image:
+              repository: gcr.io/zenika-hub/alpine-chrome
+              tag: "124"
+            args:
+              - --no-sandbox
+              - --disable-gpu
+              - --disable-dev-shm-usage
+              - --remote-debugging-address=0.0.0.0
+              - --remote-debugging-port=9222
+              - --hide-scrollbars
+
+    service:
+      app:
+        controller: karakeep-chrome
+        ports:
+          http:
+            port: 9222

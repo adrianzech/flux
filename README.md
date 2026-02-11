@@ -86,6 +86,12 @@ Format: each top-level entry is an Infisical `secretsPath` (folder); the indente
   - AUTHENTIK_SECRET_KEY
   - AUTHENTIK_EMAIL_USERNAME
   - AUTHENTIK_EMAIL_PASSWORD
+/Karakeep
+  - NEXTAUTH_SECRET
+  - MEILI_MASTER_KEY
+  - OAUTH_CLIENT_ID
+  - OAUTH_CLIENT_SECRET
+  - OPENAI_API_KEY
 ```
 
 ## Flux Bootstrap

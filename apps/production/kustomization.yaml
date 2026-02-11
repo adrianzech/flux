@@ -12,3 +12,4 @@ resources:
   - ../jellyfin/base
   - ../jellystat/base
   - ../unifi-network-application/base
+  - ../karakeep/base
