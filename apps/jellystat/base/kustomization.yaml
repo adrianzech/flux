@@ -3,5 +3,6 @@ kind: Kustomization
 resources:
   - pvc.yaml
   - database.yaml
+  - infisical-secret.yaml
   - ingress.yaml
   - release.yaml

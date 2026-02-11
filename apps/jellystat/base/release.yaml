@@ -39,6 +39,11 @@ spec:
                     key: password
               - name: POSTGRES_DB
                 value: jellystat
+              - name: JWT_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: jellystat-secrets
+                    key: JWT_SECRET
 
     service:
       app:
