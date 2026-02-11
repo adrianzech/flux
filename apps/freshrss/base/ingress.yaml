@@ -7,17 +7,8 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`freshrss.${DOMAIN}`) && PathPrefix(`/outpost.goauthentik.io/`)
-      kind: Rule
-      services:
-        - name: authentik-server
-          namespace: auth
-          port: http
-    - match: Host(`freshrss.${DOMAIN}`)
+    - match: Host(`rss.${DOMAIN}`)
       kind: Rule
       services:
         - name: freshrss
           port: 80
-      middlewares:
-        - name: authentik
-          namespace: traefik
