@@ -5,6 +5,7 @@ metadata:
   namespace: media
   labels:
     kubernetes.io/service-name: jellyfin-external
+    endpointslice.kubernetes.io/managed-by: fluxcd
 addressType: IPv4
 ports:
   - name: http
@@ -13,3 +14,5 @@ ports:
 endpoints:
   - addresses:
       - 10.0.1.30
+    conditions:
+      ready: true
