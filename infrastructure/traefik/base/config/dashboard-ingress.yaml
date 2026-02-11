@@ -7,8 +7,17 @@ spec:
   entryPoints:
     - websecure
   routes:
+    - match: Host(`traefik.${DOMAIN}`) && PathPrefix(`/outpost.goauthentik.io/`)
+      kind: Rule
+      services:
+        - name: authentik-server
+          namespace: auth
+          port: http
     - match: Host(`traefik.${DOMAIN}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
       kind: Rule
+      middlewares:
+        - name: authentik
+          namespace: traefik
       services:
         - name: api@internal
           kind: TraefikService
