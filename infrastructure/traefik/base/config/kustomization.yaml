@@ -4,5 +4,6 @@ resources:
 - cloudflare-api-token-secret.yaml
 - tls-store.yaml
 - dashboard-ingress.yaml
+- dashboard-root-redirect-middleware.yaml
 - authentik-middleware.yaml
 - wildcard-certificate.yaml

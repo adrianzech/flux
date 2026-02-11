@@ -13,6 +13,14 @@ spec:
         - name: authentik-server
           namespace: auth
           port: http
+    - match: Host(`traefik.${DOMAIN}`) && Path(`/`)
+      kind: Rule
+      middlewares:
+        - name: traefik-dashboard-root-redirect
+          namespace: traefik
+      services:
+        - name: api@internal
+          kind: TraefikService
     - match: Host(`traefik.${DOMAIN}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
       kind: Rule
       middlewares:
