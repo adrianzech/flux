@@ -17,3 +17,4 @@ resources:
   - ../teslamate/base
   - ../paperless/base
   - ../it-tools/base
+  - ../speedtest-tracker/base

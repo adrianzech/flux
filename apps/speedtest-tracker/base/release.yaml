@@ -1,0 +1,106 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: speedtest-tracker
+  namespace: monitoring
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-productivity
+        namespace: productivity
+  values:
+    controllers:
+      speedtest-tracker:
+        containers:
+          app:
+            image:
+              repository: linuxserver/speedtest-tracker
+              tag: "1.13.9"
+            env:
+              - name: DB_CONNECTION
+                value: pgsql
+              - name: DB_HOST
+                value: speedtest-tracker-database-rw.monitoring.svc.cluster.local
+              - name: DB_PORT
+                value: "5432"
+              - name: DB_DATABASE
+                value: speedtest-tracker
+              - name: DB_USERNAME
+                value: speedtest-tracker
+              - name: DB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: speedtest-tracker-database-app
+                    key: password
+              - name: PUID
+                value: "1000"
+              - name: PGID
+                value: "1000"
+              - name: SPEEDTEST_SCHEDULE
+                value: "15 */2 * * *"
+              - name: APP_URL
+                value: https://speedtest.${DOMAIN}
+              - name: ASSET_URL
+                value: https://speedtest.${DOMAIN}
+              - name: APP_TIMEZONE
+                value: Europe/Vienna
+              - name: DISPLAY_TIMEZONE
+                value: Europe/Vienna
+              - name: APP_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: speedtest-tracker-secrets
+                    key: APP_KEY
+              - name: MAIL_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: speedtest-tracker-secrets
+                    key: MAIL_HOST
+              - name: MAIL_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: speedtest-tracker-secrets
+                    key: MAIL_PORT
+              - name: MAIL_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: speedtest-tracker-secrets
+                    key: MAIL_USERNAME
+              - name: MAIL_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: speedtest-tracker-secrets
+                    key: MAIL_PASSWORD
+              - name: MAIL_ENCRYPTION
+                valueFrom:
+                  secretKeyRef:
+                    name: speedtest-tracker-secrets
+                    key: MAIL_ENCRYPTION
+              - name: MAIL_FROM_ADDRESS
+                valueFrom:
+                  secretKeyRef:
+                    name: speedtest-tracker-secrets
+                    key: MAIL_FROM_ADDRESS
+              - name: MAIL_FROM_NAME
+                valueFrom:
+                  secretKeyRef:
+                    name: speedtest-tracker-secrets
+                    key: MAIL_FROM_NAME
+    service:
+      app:
+        controller: speedtest-tracker
+        ports:
+          http:
+            port: 80
+    persistence:
+      config:
+        enabled: true
+        existingClaim: speedtest-tracker-config-pvc
+        globalMounts:
+          - path: /config
