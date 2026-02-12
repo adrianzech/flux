@@ -27,6 +27,11 @@ spec:
             - ip: "${TRAEFIK_LB_IP}"
               hostnames:
                 - "sso.${DOMAIN}"
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
         containers:
           app:
             image:
