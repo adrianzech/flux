@@ -1,0 +1,31 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: bentopdf
+  namespace: media
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-media
+        namespace: media
+  values:
+    controllers:
+      bentopdf:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/alam00000/bentopdf-simple
+              tag: "v2.2.0"
+
+    service:
+      app:
+        controller: bentopdf
+        ports:
+          http:
+            port: 8080

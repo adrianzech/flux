@@ -13,3 +13,4 @@ resources:
   - ../jellystat/base
   - ../unifi-network-application/base
   - ../karakeep/base
+  - ../bentopdf/base
