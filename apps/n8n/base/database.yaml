@@ -1,0 +1,15 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: n8n-database
+  namespace: automation
+spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:18
+  instances: 1
+  storage:
+    size: 2Gi
+    storageClass: "proxmox-csi"
+  bootstrap:
+    initdb:
+      database: n8n
+      owner: n8n
