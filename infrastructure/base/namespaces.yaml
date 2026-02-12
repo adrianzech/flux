@@ -74,6 +74,14 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
+  name: productivity
+  labels:
+    name: productivity
+    pod-security.kubernetes.io/enforce: baseline
+---
+apiVersion: v1
+kind: Namespace
+metadata:
   name: unifi
   labels:
     name: unifi

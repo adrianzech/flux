@@ -2,15 +2,15 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: karakeep
-  namespace: media
+  namespace: productivity
 spec:
   interval: 15m
   timeout: 15m
   dependsOn:
     - name: karakeep-chrome
-      namespace: media
+      namespace: productivity
     - name: karakeep-meilisearch
-      namespace: media
+      namespace: productivity
   chart:
     spec:
       chart: app-template
@@ -43,14 +43,14 @@ spec:
                     name: karakeep-secrets
                     key: NEXTAUTH_SECRET
               - name: MEILI_ADDR
-                value: http://karakeep-meilisearch.media.svc.cluster.local:7700
+                value: http://karakeep-meilisearch.productivity.svc.cluster.local:7700
               - name: MEILI_MASTER_KEY
                 valueFrom:
                   secretKeyRef:
                     name: karakeep-secrets
                     key: MEILI_MASTER_KEY
               - name: BROWSER_WEB_URL
-                value: http://karakeep-chrome.media.svc.cluster.local:9222
+                value: http://karakeep-chrome.productivity.svc.cluster.local:9222
               - name: DISABLE_SIGNUPS
                 value: "true"
               - name: OAUTH_WELLKNOWN_URL
