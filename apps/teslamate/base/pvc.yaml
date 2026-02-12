@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: teslamate-import-pvc
+  namespace: productivity
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: proxmox-csi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: teslamate-grafana-pvc
+  namespace: productivity
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: proxmox-csi

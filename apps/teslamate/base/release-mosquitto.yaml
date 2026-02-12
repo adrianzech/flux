@@ -1,0 +1,45 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: teslamate-mosquitto
+  namespace: productivity
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-media
+        namespace: productivity
+  values:
+    controllers:
+      teslamate-mosquitto:
+        containers:
+          app:
+            image:
+              repository: eclipse-mosquitto
+              tag: "2"
+            args:
+              - mosquitto
+              - -c
+              - /mosquitto-no-auth.conf
+
+    service:
+      app:
+        controller: teslamate-mosquitto
+        ports:
+          mqtt:
+            port: 1883
+
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: teslamate-mosquitto-config
+        defaultMode: 0644
+        globalMounts:
+          - path: /mosquitto-no-auth.conf
+            subPath: mosquitto-no-auth.conf
