@@ -1,0 +1,79 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: norish
+  namespace: health
+spec:
+  interval: 15m
+  timeout: 15m
+  dependsOn:
+    - name: norish-redis
+      namespace: health
+    - name: norish-chrome-headless
+      namespace: health
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-health
+        namespace: health
+  values:
+    controllers:
+      norish:
+        pod:
+          hostAliases:
+            - ip: "${TRAEFIK_LB_IP}"
+              hostnames:
+                - "sso.${DOMAIN}"
+        containers:
+          app:
+            image:
+              repository: norishapp/norish
+              tag: "v0.16.1-beta"
+            env:
+              - name: DATABASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: norish-database-app
+                    key: uri
+              - name: REDIS_URL
+                value: redis://norish-redis.health.svc.cluster.local:6379
+              - name: CHROME_WS_ENDPOINT
+                value: ws://norish-chrome-headless.health.svc.cluster.local:3000
+              - name: AUTH_URL
+                value: https://norish.${DOMAIN}
+              - name: TRUSTED_ORIGINS
+                value: https://norish.${DOMAIN}
+              - name: MASTER_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: norish-secrets
+                    key: MASTER_KEY
+              - name: OIDC_NAME
+                value: Authentik
+              - name: OIDC_ISSUER
+                value: https://sso.${DOMAIN}/application/o/norish/
+              - name: OIDC_CLIENT_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: norish-secrets
+                    key: OIDC_CLIENT_ID
+              - name: OIDC_CLIENT_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: norish-secrets
+                    key: OIDC_CLIENT_SECRET
+    service:
+      app:
+        controller: norish
+        ports:
+          http:
+            port: 3000
+    persistence:
+      uploads:
+        enabled: true
+        existingClaim: norish-uploads-pvc
+        globalMounts:
+          - path: /app/uploads

@@ -98,6 +98,14 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
+  name: health
+  labels:
+    name: health
+    pod-security.kubernetes.io/enforce: baseline
+---
+apiVersion: v1
+kind: Namespace
+metadata:
   name: unifi
   labels:
     name: unifi

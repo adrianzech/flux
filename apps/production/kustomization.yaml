@@ -19,3 +19,4 @@ resources:
   - ../it-tools/base
   - ../speedtest-tracker/base
   - ../n8n/base
+  - ../norish/base
