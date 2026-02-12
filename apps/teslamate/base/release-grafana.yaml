@@ -17,11 +17,20 @@ spec:
   values:
     controllers:
       teslamate-grafana:
+        pod:
+          securityContext:
+            runAsUser: 472
+            runAsGroup: 472
+            fsGroup: 472
         containers:
           app:
             image:
               repository: teslamate/grafana
               tag: "2.2.0"
+            securityContext:
+              runAsUser: 472
+              runAsGroup: 472
+              runAsNonRoot: true
             env:
               - name: DATABASE_HOST
                 value: teslamate-database-rw.productivity.svc.cluster.local
