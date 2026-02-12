@@ -18,6 +18,10 @@ spec:
     controllers:
       teslamate-grafana:
         pod:
+          hostAliases:
+            - ip: "${TRAEFIK_LB_IP}"
+              hostnames:
+                - "sso.${DOMAIN}"
           securityContext:
             runAsUser: 472
             runAsGroup: 472

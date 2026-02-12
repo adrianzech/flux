@@ -20,6 +20,11 @@ spec:
   values:
     controllers:
       teslamate:
+        pod:
+          hostAliases:
+            - ip: "${TRAEFIK_LB_IP}"
+              hostnames:
+                - "sso.${DOMAIN}"
         containers:
           app:
             image:
