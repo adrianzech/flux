@@ -16,3 +16,4 @@ resources:
   - ../bentopdf/base
   - ../teslamate/base
   - ../paperless/base
+  - ../it-tools/base
