@@ -1,0 +1,123 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: paperless
+  namespace: productivity
+spec:
+  interval: 15m
+  timeout: 20m
+  dependsOn:
+    - name: paperless-redis
+      namespace: productivity
+    - name: paperless-gotenberg
+      namespace: productivity
+    - name: paperless-tika
+      namespace: productivity
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-productivity
+        namespace: productivity
+  values:
+    controllers:
+      paperless:
+        pod:
+          hostAliases:
+            - ip: "${TRAEFIK_LB_IP}"
+              hostnames:
+                - "sso.${DOMAIN}"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/paperless-ngx/paperless-ngx
+              tag: "2.20.6"
+            env:
+              - name: PAPERLESS_URL
+                value: "https://paperless.${DOMAIN}"
+              - name: PAPERLESS_ALLOWED_HOSTS
+                value: "paperless.${DOMAIN}"
+              - name: USERMAP_UID
+                value: "1000"
+              - name: USERMAP_GID
+                value: "1000"
+              - name: PAPERLESS_DBHOST
+                value: paperless-database-rw.productivity.svc.cluster.local
+              - name: PAPERLESS_DBNAME
+                value: paperless
+              - name: PAPERLESS_DBUSER
+                value: paperless
+              - name: PAPERLESS_DBPASS
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-database-app
+                    key: password
+              - name: PAPERLESS_REDIS
+                value: redis://paperless-redis.productivity.svc.cluster.local:6379
+              - name: PAPERLESS_ENABLE_HTTP_REMOTE_USER
+                value: "TRUE"
+              - name: PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME
+                value: HTTP_X_AUTHENTIK_USERNAME
+              - name: PAPERLESS_OCR_LANGUAGE
+                value: deu
+              - name: PAPERLESS_TIME_ZONE
+                value: Europe/Vienna
+              - name: PAPERLESS_CONSUMER_POLLING
+                value: "60"
+              - name: PAPERLESS_EMAIL_TASK_CRON
+                value: "*/5 * * * *"
+              - name: PAPERLESS_OCR_USER_ARGS
+                value: '{"invalidate_digital_signatures": true}'
+              - name: PAPERLESS_TIKA_ENABLED
+                value: "1"
+              - name: PAPERLESS_TIKA_GOTENBERG_ENDPOINT
+                value: http://paperless-gotenberg.productivity.svc.cluster.local:3000
+              - name: PAPERLESS_TIKA_ENDPOINT
+                value: http://paperless-tika.productivity.svc.cluster.local:9998
+              - name: PAPERLESS_ACCOUNT_ALLOW_SIGNUPS
+                value: "false"
+              - name: PAPERLESS_DISABLE_REGULAR_LOGIN
+                value: "false"
+              - name: PAPERLESS_SOCIAL_PROVIDERS
+                value: allauth.socialaccount.providers.openid_connect
+              - name: PAPERLESS_LOGOUT_REDIRECT_URL
+                value: https://sso.${DOMAIN}/application/o/paperless/end-session/
+              - name: PAPERLESS_SECRET_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secrets
+                    key: PAPERLESS_SECRET_KEY
+              - name: PAPERLESS_SOCIALACCOUNT_PROVIDERS
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secrets
+                    key: PAPERLESS_SOCIALACCOUNT_PROVIDERS
+    service:
+      app:
+        controller: paperless
+        ports:
+          http:
+            port: 8000
+    persistence:
+      data:
+        enabled: true
+        existingClaim: paperless-data-pvc
+        globalMounts:
+          - path: /usr/src/paperless/data
+      media:
+        enabled: true
+        existingClaim: paperless-media-pvc
+        globalMounts:
+          - path: /usr/src/paperless/media
+      consume:
+        enabled: true
+        existingClaim: nfs-productivity-scan-consume-pvc
+        globalMounts:
+          - path: /usr/src/paperless/consume
+      export:
+        enabled: true
+        existingClaim: nfs-productivity-scan-export-pvc
+        globalMounts:
+          - path: /usr/src/paperless/export

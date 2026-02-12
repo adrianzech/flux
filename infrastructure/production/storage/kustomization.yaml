@@ -4,3 +4,5 @@ resources:
   - nfs-volumes.yaml
   - nfs-storageclass.yaml
   - media-pvcs.yaml
+  - paperless-nfs-volumes.yaml
+  - paperless-pvcs.yaml

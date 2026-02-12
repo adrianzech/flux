@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-productivity-scan-consume-pvc
+  namespace: productivity
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Ti
+  storageClassName: "nfs"
+  volumeName: nfs-productivity-scan-consume
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-productivity-scan-export-pvc
+  namespace: productivity
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Ti
+  storageClassName: "nfs"
+  volumeName: nfs-productivity-scan-export
