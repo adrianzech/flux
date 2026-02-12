@@ -1,7 +1,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: bjw-s-charts-media
+  name: bjw-s-charts-productivity
   namespace: productivity
 spec:
   interval: 1h
