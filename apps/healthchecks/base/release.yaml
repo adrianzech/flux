@@ -1,0 +1,96 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: healthchecks
+  namespace: monitoring
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-monitoring
+        namespace: monitoring
+  values:
+    controllers:
+      healthchecks:
+        containers:
+          app:
+            image:
+              repository: linuxserver/healthchecks
+              tag: "4.0.20260209"
+            env:
+              - name: TZ
+                value: Europe/Vienna
+              - name: PUID
+                value: "1000"
+              - name: PGID
+                value: "1000"
+              - name: DEBUG
+                value: "False"
+              - name: REGISTRATION_OPEN
+                value: "False"
+              - name: ALLOWED_HOSTS
+                value: healthchecks.${DOMAIN}
+              - name: SITE_LOGO_URL
+                value: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/healthchecks-v2.png
+              - name: SITE_ROOT
+                value: https://healthchecks.${DOMAIN}
+              - name: SITE_NAME
+                value: Healthchecks
+              - name: SECRET_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: healthchecks-secrets
+                    key: SECRET_KEY
+              - name: EMAIL_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: healthchecks-secrets
+                    key: EMAIL_HOST
+              - name: EMAIL_PORT
+                value: "587"
+              - name: EMAIL_USE_TLS
+                value: "True"
+              - name: EMAIL_USE_SSL
+                value: "False"
+              - name: EMAIL_HOST_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: healthchecks-secrets
+                    key: EMAIL_HOST_USER
+              - name: EMAIL_HOST_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: healthchecks-secrets
+                    key: EMAIL_HOST_PASSWORD
+              - name: DEFAULT_FROM_EMAIL
+                valueFrom:
+                  secretKeyRef:
+                    name: healthchecks-secrets
+                    key: DEFAULT_FROM_EMAIL
+              - name: SUPERUSER_EMAIL
+                valueFrom:
+                  secretKeyRef:
+                    name: healthchecks-secrets
+                    key: SUPERUSER_EMAIL
+              - name: SUPERUSER_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: healthchecks-secrets
+                    key: SUPERUSER_PASSWORD
+    service:
+      app:
+        controller: healthchecks
+        ports:
+          http:
+            port: 8000
+    persistence:
+      config:
+        enabled: true
+        existingClaim: healthchecks-config-pvc
+        globalMounts:
+          - path: /config

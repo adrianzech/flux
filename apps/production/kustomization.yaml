@@ -20,3 +20,4 @@ resources:
   - ../speedtest-tracker/base
   - ../n8n/base
   - ../norish/base
+  - ../healthchecks/base

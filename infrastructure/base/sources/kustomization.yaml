@@ -4,6 +4,7 @@ resources:
   - bjw-s-repository-automation.yaml
   - bjw-s-repository-health.yaml
   - bjw-s-repository-media.yaml
+  - bjw-s-repository-monitoring.yaml
   - bjw-s-repository-productivity.yaml
   - bjw-s-repository-unifi.yaml
   - authentik-repository.yaml
