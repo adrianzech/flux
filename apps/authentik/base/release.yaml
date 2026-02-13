@@ -40,6 +40,25 @@ spec:
 
   values:
     server:
+      resources:
+        requests:
+          cpu: 250m
+          memory: 512Mi
+        limits:
+          cpu: "1"
+          memory: 1Gi
+      livenessProbe:
+        timeoutSeconds: 10
+        periodSeconds: 15
+        failureThreshold: 5
+      readinessProbe:
+        timeoutSeconds: 10
+        periodSeconds: 15
+        failureThreshold: 5
+      startupProbe:
+        timeoutSeconds: 10
+        periodSeconds: 15
+        failureThreshold: 60
       service:
         main:
           enabled: true
@@ -49,6 +68,27 @@ spec:
               port: 80
               targetPort: 9000
               protocol: TCP
+
+    worker:
+      resources:
+        requests:
+          cpu: 250m
+          memory: 512Mi
+        limits:
+          cpu: "1"
+          memory: 1Gi
+      livenessProbe:
+        timeoutSeconds: 10
+        periodSeconds: 15
+        failureThreshold: 5
+      readinessProbe:
+        timeoutSeconds: 10
+        periodSeconds: 15
+        failureThreshold: 5
+      startupProbe:
+        timeoutSeconds: 10
+        periodSeconds: 15
+        failureThreshold: 60
 
     authentik:
       env:
