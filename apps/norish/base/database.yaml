@@ -6,6 +6,13 @@ metadata:
 spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:18
   instances: 1
+  resources:
+    requests:
+      cpu: 200m
+      memory: 384Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
   storage:
     size: 5Gi
     storageClass: "proxmox-csi"

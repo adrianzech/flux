@@ -22,6 +22,13 @@ spec:
             image:
               repository: mongo
               tag: "8.2.4"
+            resources:
+              requests:
+                cpu: 200m
+                memory: 512Mi
+              limits:
+                cpu: "1"
+                memory: 1Gi
             args:
               - --bind_ip_all
             ports:
