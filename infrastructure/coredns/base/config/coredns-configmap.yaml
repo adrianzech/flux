@@ -23,8 +23,16 @@ data:
         }
         forward . /etc/resolv.conf {
            max_concurrent 1000
+           policy sequential
+           health_check 5s
+           expire 30s
         }
-        cache 30
+        cache 300 {
+           success 10000 300 5
+           denial 5000 60 5
+           prefetch 20 1m 20%
+           serve_stale 1m
+        }
         loop
         reload
         loadbalance
