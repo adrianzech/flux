@@ -8,7 +8,7 @@ resources:
   - ../sabnzbd/base
   - ../prowlarr/base
   - ../bazarr/base
-  - ../jellyseerr/base
+  - ../seerr/base
   - ../jellyfin/base
   - ../jellystat/base
   - ../unifi-network-application/base
