@@ -7,8 +7,17 @@ spec:
   entryPoints:
     - websecure
   routes:
+    - match: Host(`change.${DOMAIN}`) && PathPrefix(`/outpost.goauthentik.io/`)
+      kind: Rule
+      services:
+        - name: authentik-server
+          namespace: auth
+          port: http
     - match: Host(`change.${DOMAIN}`)
       kind: Rule
       services:
         - name: changedetection
           port: 5000
+      middlewares:
+        - name: authentik
+          namespace: traefik
