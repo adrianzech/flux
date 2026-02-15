@@ -40,6 +40,13 @@ spec:
 
   values:
     server:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: authentik-data-pvc
+      volumeMounts:
+        - name: data
+          mountPath: /data
       resources:
         requests:
           cpu: 250m
@@ -70,6 +77,13 @@ spec:
               protocol: TCP
 
     worker:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: authentik-data-pvc
+      volumeMounts:
+        - name: data
+          mountPath: /data
       resources:
         requests:
           cpu: 250m
