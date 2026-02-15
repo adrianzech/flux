@@ -21,3 +21,4 @@ resources:
   - ../n8n/base
   - ../norish/base
   - ../healthchecks/base
+  - ../changedetection/base
