@@ -13,6 +13,11 @@ spec:
         - name: authentik-server
           namespace: auth
           port: http
+    - match: Host(`prowlarr.${DOMAIN}`) && PathPrefix(`/api`)
+      kind: Rule
+      services:
+        - name: prowlarr
+          port: 9696
     - match: Host(`prowlarr.${DOMAIN}`)
       kind: Rule
       services:

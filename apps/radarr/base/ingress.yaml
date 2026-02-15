@@ -13,6 +13,11 @@ spec:
         - name: authentik-server
           namespace: auth
           port: http
+    - match: Host(`radarr.${DOMAIN}`) && PathPrefix(`/api`)
+      kind: Rule
+      services:
+        - name: radarr
+          port: 7878
     - match: Host(`radarr.${DOMAIN}`)
       kind: Rule
       services:

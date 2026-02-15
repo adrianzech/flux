@@ -13,6 +13,11 @@ spec:
         - name: authentik-server
           namespace: auth
           port: http
+    - match: Host(`jellystat.${DOMAIN}`) && PathPrefix(`/api`)
+      kind: Rule
+      services:
+        - name: jellystat
+          port: 3000
     - match: Host(`jellystat.${DOMAIN}`)
       kind: Rule
       services:

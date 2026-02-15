@@ -13,6 +13,11 @@ spec:
         - name: authentik-server
           namespace: auth
           port: http
+    - match: Host(`sabnzbd.${DOMAIN}`) && PathPrefix(`/api`)
+      kind: Rule
+      services:
+        - name: sabnzbd
+          port: 8080
     - match: Host(`sabnzbd.${DOMAIN}`)
       kind: Rule
       services:
