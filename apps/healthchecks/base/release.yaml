@@ -41,6 +41,16 @@ spec:
                 value: https://healthchecks.${DOMAIN}
               - name: SITE_NAME
                 value: Healthchecks
+              - name: PUSHOVER_API_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: healthchecks-secrets
+                    key: PUSHOVER_API_TOKEN
+              - name: PUSHOVER_SUBSCRIPTION_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: healthchecks-secrets
+                    key: PUSHOVER_SUBSCRIPTION_URL
               - name: SECRET_KEY
                 valueFrom:
                   secretKeyRef:
