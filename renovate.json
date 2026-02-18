@@ -2,7 +2,6 @@
   "extends": ["config:recommended"],
   "enabledManagers": ["flux", "kubernetes", "helm-values"],
   "timezone": "Europe/Vienna",
-  "schedule": ["before 6am on monday"],
   "labels": ["dependencies", "renovate"],
   "prConcurrentLimit": 10
 }
