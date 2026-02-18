@@ -21,7 +21,7 @@ spec:
           app:
             image:
               repository: getmeili/meilisearch
-              tag: "v1.13.3"
+              tag: "v1.35.1"
             resources:
               requests:
                 cpu: 200m
