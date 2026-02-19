@@ -22,3 +22,4 @@ resources:
   - ../norish/base
   - ../healthchecks/base
   - ../changedetection/base
+  - ../tracearr/base

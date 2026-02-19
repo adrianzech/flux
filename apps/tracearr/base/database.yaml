@@ -1,0 +1,22 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: tracearr-database
+  namespace: media
+spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:18
+  instances: 1
+  resources:
+    requests:
+      cpu: 200m
+      memory: 384Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+  storage:
+    size: 2Gi
+    storageClass: "proxmox-csi"
+  bootstrap:
+    initdb:
+      database: tracearr
+      owner: tracearr
