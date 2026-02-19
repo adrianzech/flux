@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: n8nio/n8n
-              tag: "2.9.0"
+              tag: "2.9.1"
             resources:
               requests:
                 cpu: 250m

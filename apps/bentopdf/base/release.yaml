@@ -21,7 +21,7 @@ spec:
           app:
             image:
               repository: ghcr.io/alam00000/bentopdf-simple
-              tag: "v2.2.0"
+              tag: "2.2.1"
 
     service:
       app:
