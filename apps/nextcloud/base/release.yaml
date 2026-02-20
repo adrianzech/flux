@@ -71,15 +71,13 @@ spec:
             'overwriteprotocol' => 'https',
             'default_phone_region' => 'AT',
           );
+      extraVolumes:
+        - name: nextcloud-data
+          persistentVolumeClaim:
+            claimName: nfs-cloud-data-pvc
+      extraVolumeMounts:
+        - name: nextcloud-data
+          mountPath: /var/www/html/data
 
     collabora:
       enabled: false
-
-    extraVolumes:
-      - name: nextcloud-data
-        persistentVolumeClaim:
-          claimName: nfs-cloud-data-pvc
-
-    extraVolumeMounts:
-      - name: nextcloud-data
-        mountPath: /var/www/html/data
