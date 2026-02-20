@@ -6,6 +6,17 @@ metadata:
 spec:
   interval: 15m
   timeout: 15m
+  valuesFrom:
+    - kind: Secret
+      name: collabora-secrets
+      valuesKey: username
+      targetPath: collabora.username
+      optional: false
+    - kind: Secret
+      name: collabora-secrets
+      valuesKey: password
+      targetPath: collabora.password
+      optional: false
   chart:
     spec:
       chart: collabora-online
@@ -30,13 +41,3 @@ spec:
         - en_US
       extra_params: >-
         --o:ssl.enable=false --o:ssl.termination=true --o:welcome.enable=false
-      username:
-        secret:
-          enabled: true
-          secretName: collabora-secrets
-          secretKey: username
-      password:
-        secret:
-          enabled: true
-          secretName: collabora-secrets
-          secretKey: password
