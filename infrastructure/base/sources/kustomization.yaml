@@ -11,6 +11,8 @@ resources:
   - cert-manager-repository.yaml
   - cnpg-repository.yaml
   - infisical-repository.yaml
+  - nextcloud-repository.yaml
+  - collabora-repository.yaml
   - metallb-repository.yaml
   - metrics-server-repository.yaml
   - proxmox-csi-repository.yaml

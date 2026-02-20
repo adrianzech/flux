@@ -1,0 +1,8 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: collabora-online
+  namespace: cloud
+spec:
+  interval: 1h
+  url: https://collaboraonline.github.io/online

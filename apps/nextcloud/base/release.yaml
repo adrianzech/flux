@@ -1,0 +1,85 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nextcloud
+  namespace: cloud
+spec:
+  interval: 15m
+  timeout: 20m
+  dependsOn:
+    - name: collabora
+      namespace: cloud
+  chart:
+    spec:
+      chart: nextcloud
+      version: "8.9.1"
+      sourceRef:
+        kind: HelmRepository
+        name: nextcloud
+        namespace: cloud
+  values:
+    fullnameOverride: nextcloud
+
+    image:
+      tag: "32.0.6"
+
+    ingress:
+      enabled: false
+
+    internalDatabase:
+      enabled: false
+
+    mariadb:
+      enabled: false
+
+    redis:
+      enabled: true
+
+    externalDatabase:
+      enabled: true
+      type: postgresql
+      host: nextcloud-database-rw.cloud.svc.cluster.local
+      database: nextcloud
+      existingSecret:
+        enabled: true
+        secretName: nextcloud-database-app
+        usernameKey: username
+        passwordKey: password
+
+    persistence:
+      enabled: true
+      existingClaim: nextcloud-main-pvc
+
+    nextcloud:
+      host: cloud.${DOMAIN}
+      datadir: /var/www/html/data
+      existingSecret:
+        enabled: true
+        secretName: nextcloud-secrets
+        usernameKey: nextcloud-username
+        passwordKey: nextcloud-password
+        tokenKey: nextcloud-token
+      configs:
+        z-nextcloud-config.config.php: |
+          <?php
+          $CONFIG = array (
+            'trusted_domains' =>
+            array (
+              0 => 'cloud.${DOMAIN}',
+            ),
+            'overwrite.cli.url' => 'https://cloud.${DOMAIN}',
+            'overwriteprotocol' => 'https',
+            'default_phone_region' => 'AT',
+          );
+
+    collabora:
+      enabled: false
+
+    extraVolumes:
+      - name: nextcloud-data
+        persistentVolumeClaim:
+          claimName: nfs-cloud-data-pvc
+
+    extraVolumeMounts:
+      - name: nextcloud-data
+        mountPath: /var/www/html/data
