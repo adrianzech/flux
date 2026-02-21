@@ -19,9 +19,34 @@ spec:
         namespace: cloud
   values:
     fullnameOverride: nextcloud
+    replicaCount: 1
+
+    autoscaling:
+      enabled: false
 
     image:
       tag: "32.0.6"
+
+    startupProbe:
+      enabled: true
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 60
+
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 120
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 12
 
     ingress:
       enabled: false
