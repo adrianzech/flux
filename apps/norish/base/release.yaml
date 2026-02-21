@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: norishapp/norish
-              tag: "v0.16.1-beta"
+              tag: "v0.16.2-beta"
             env:
               - name: DATABASE_URL
                 valueFrom:
