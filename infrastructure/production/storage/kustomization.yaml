@@ -3,8 +3,10 @@ kind: Kustomization
 resources:
   - nfs-volumes.yaml
   - cloud-nfs-volumes.yaml
+  - immich-nfs-volumes.yaml
   - nfs-storageclass.yaml
   - media-pvcs.yaml
   - cloud-pvcs.yaml
+  - immich-pvcs.yaml
   - paperless-nfs-volumes.yaml
   - paperless-pvcs.yaml

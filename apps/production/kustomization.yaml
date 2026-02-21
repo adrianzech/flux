@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - ../collabora/base
   - ../nextcloud/base
+  - ../immich/base
   - ../authentik/base
   - ../freshrss/base
   - ../sonarr/base
