@@ -15,8 +15,6 @@ spec:
         name: immich
         namespace: immich
   values:
-    fullnameOverride: immich
-
     postgresql:
       enabled: false
 
