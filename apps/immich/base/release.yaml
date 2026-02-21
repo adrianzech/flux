@@ -15,9 +15,6 @@ spec:
         name: immich
         namespace: immich
   values:
-    postgresql:
-      enabled: false
-
     valkey:
       enabled: true
 
