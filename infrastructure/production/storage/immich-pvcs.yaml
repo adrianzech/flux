@@ -11,3 +11,87 @@ spec:
       storage: 5Ti
   storageClassName: "nfs"
   volumeName: nfs-immich-photos
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-immich-videos-pvc
+  namespace: immich
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: "nfs"
+  volumeName: nfs-immich-videos
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-immich-thumbnails-pvc
+  namespace: immich
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: "nfs"
+  volumeName: nfs-immich-thumbnails
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-immich-uploads-pvc
+  namespace: immich
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: "nfs"
+  volumeName: nfs-immich-uploads
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-immich-backups-pvc
+  namespace: immich
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: "nfs"
+  volumeName: nfs-immich-backups
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-immich-profile-pvc
+  namespace: immich
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: "nfs"
+  volumeName: nfs-immich-profile
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-immich-machine-learning-pvc
+  namespace: immich
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: "nfs"
+  volumeName: nfs-immich-machine-learning

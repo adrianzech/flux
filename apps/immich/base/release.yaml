@@ -28,17 +28,17 @@ spec:
         library:
           existingClaim: nfs-immich-photos-pvc
         upload:
-          existingClaim: immich-upload-pvc
+          existingClaim: nfs-immich-uploads-pvc
         thumbs:
-          existingClaim: immich-thumbs-pvc
+          existingClaim: nfs-immich-thumbnails-pvc
         profile:
-          existingClaim: immich-profile-pvc
+          existingClaim: nfs-immich-profile-pvc
         video:
-          existingClaim: immich-video-pvc
+          existingClaim: nfs-immich-videos-pvc
         backups:
-          existingClaim: immich-backups-pvc
+          existingClaim: nfs-immich-backups-pvc
         machine-learning:
-          existingClaim: immich-machine-learning-pvc
+          existingClaim: nfs-immich-machine-learning-pvc
 
     env:
       - name: TZ

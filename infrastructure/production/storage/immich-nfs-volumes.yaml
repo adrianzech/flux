@@ -10,7 +10,109 @@ spec:
   storageClassName: "nfs"
   nfs:
     server: 10.0.1.30
-    path: "/mnt/user/Photos"
+    path: "/mnt/user/Immich/Photos"
+  mountOptions:
+    - nfsvers=4.1
+    - tcp
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-immich-videos
+spec:
+  capacity:
+    storage: 10Ti
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "nfs"
+  nfs:
+    server: 10.0.1.30
+    path: "/mnt/user/Immich/Videos"
+  mountOptions:
+    - nfsvers=4.1
+    - tcp
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-immich-thumbnails
+spec:
+  capacity:
+    storage: 10Ti
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "nfs"
+  nfs:
+    server: 10.0.1.30
+    path: "/mnt/user/Immich/Thumbnails"
+  mountOptions:
+    - nfsvers=4.1
+    - tcp
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-immich-uploads
+spec:
+  capacity:
+    storage: 10Ti
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "nfs"
+  nfs:
+    server: 10.0.1.30
+    path: "/mnt/user/Immich/Uploads"
+  mountOptions:
+    - nfsvers=4.1
+    - tcp
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-immich-backups
+spec:
+  capacity:
+    storage: 10Ti
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "nfs"
+  nfs:
+    server: 10.0.1.30
+    path: "/mnt/user/Immich/Backups"
+  mountOptions:
+    - nfsvers=4.1
+    - tcp
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-immich-profile
+spec:
+  capacity:
+    storage: 10Ti
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "nfs"
+  nfs:
+    server: 10.0.1.30
+    path: "/mnt/user/Immich/Profile"
+  mountOptions:
+    - nfsvers=4.1
+    - tcp
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-immich-machine-learning
+spec:
+  capacity:
+    storage: 10Ti
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "nfs"
+  nfs:
+    server: 10.0.1.30
+    path: "/mnt/user/Immich/MachineLearning"
   mountOptions:
     - nfsvers=4.1
     - tcp
