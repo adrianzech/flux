@@ -6,4 +6,5 @@ resources:
   - pvc.yaml
   - release.yaml
   - security-headers-middleware.yaml
+  - well-known-redirects-middleware.yaml
   - ingress.yaml

@@ -7,6 +7,22 @@ spec:
   entryPoints:
     - websecure
   routes:
+    - match: Host(`cloud.${DOMAIN}`) && PathPrefix(`/.well-known/caldav`)
+      kind: Rule
+      middlewares:
+        - name: nextcloud-redirect-caldav
+        - name: nextcloud-security-headers
+      services:
+        - name: nextcloud
+          port: 8080
+    - match: Host(`cloud.${DOMAIN}`) && PathPrefix(`/.well-known/carddav`)
+      kind: Rule
+      middlewares:
+        - name: nextcloud-redirect-carddav
+        - name: nextcloud-security-headers
+      services:
+        - name: nextcloud
+          port: 8080
     - match: Host(`cloud.${DOMAIN}`)
       kind: Rule
       middlewares:
