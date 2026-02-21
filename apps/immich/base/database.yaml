@@ -4,7 +4,7 @@ metadata:
   name: immich-database
   namespace: immich
 spec:
-  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:18-0.4.3
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:18.2-1.1.0
   instances: 1
   resources:
     requests:
@@ -20,3 +20,8 @@ spec:
     initdb:
       database: immich
       owner: immich
+      postInitSQL:
+        - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
+  postgresql:
+    shared_preload_libraries:
+      - "vchord.so"
