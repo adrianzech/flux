@@ -57,7 +57,6 @@ spec:
                     secretKeyRef:
                       name: immich-database-app
                       key: dbname
-                DB_VECTOR_EXTENSION: vchord
                 TZ: Europe/Vienna
       ingress:
         main:
