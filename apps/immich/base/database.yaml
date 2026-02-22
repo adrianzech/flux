@@ -5,6 +5,8 @@ metadata:
   namespace: immich
 spec:
   imageName: ghcr.io/immich-app/postgres:18-vectorchord0.5.3
+  postgresUID: 999
+  postgresGID: 999
   instances: 1
   resources:
     requests:
