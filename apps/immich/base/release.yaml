@@ -21,7 +21,7 @@ spec:
     immich:
       persistence:
         library:
-          existingClaim: nfs-immich-library-pvc
+          existingClaim: nfs-immich-data-root-pvc
         upload:
           existingClaim: nfs-immich-uploads-pvc
         thumbs:
