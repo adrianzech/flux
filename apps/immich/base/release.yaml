@@ -62,16 +62,7 @@ spec:
                 TZ: Europe/Vienna
       ingress:
         main:
-          enabled: true
-          className: traefik
-          hosts:
-            - host: photos.${DOMAIN}
-              paths:
-                - path: /
-          tls:
-            - secretName: wildcard-domain-tls
-              hosts:
-                - photos.${DOMAIN}
+          enabled: false
 
     machine-learning:
       controllers:

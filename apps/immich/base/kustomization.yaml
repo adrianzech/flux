@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - database.yaml
   - release.yaml
+  - ingress.yaml
