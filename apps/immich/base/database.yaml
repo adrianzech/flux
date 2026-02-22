@@ -22,7 +22,7 @@ spec:
     initdb:
       database: immich
       owner: immich
-      postInitSQL:
+      postInitApplicationSQL:
         - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
   postgresql:
     shared_preload_libraries:
