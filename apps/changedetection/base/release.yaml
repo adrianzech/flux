@@ -21,7 +21,7 @@ spec:
           app:
             image:
               repository: linuxserver/changedetection.io
-              tag: "0.53.6"
+              tag: "0.53.7"
             env:
               - name: TZ
                 value: Europe/Vienna
