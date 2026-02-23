@@ -22,6 +22,13 @@ spec:
             image:
               repository: linuxserver/sabnzbd
               tag: "4.5.5"
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                cpu: "1"
+                memory: 2Gi
 
             env:
               TZ: "Europe/Vienna"
