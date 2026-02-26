@@ -2,7 +2,7 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: nextcloud-security-headers
-  namespace: cloud
+  namespace: nextcloud
 spec:
   headers:
     stsSeconds: 15552000

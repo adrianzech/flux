@@ -10,6 +10,14 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
+  name: nextcloud
+  labels:
+    name: nextcloud
+    pod-security.kubernetes.io/enforce: baseline
+---
+apiVersion: v1
+kind: Namespace
+metadata:
   name: immich
   labels:
     name: immich

@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: nextcloud
-  namespace: cloud
+  namespace: nextcloud
 spec:
   interval: 15m
   timeout: 20m
@@ -16,7 +16,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: nextcloud
-        namespace: cloud
+        namespace: nextcloud
   values:
     fullnameOverride: nextcloud
     replicaCount: 1
@@ -63,7 +63,7 @@ spec:
     externalDatabase:
       enabled: true
       type: postgresql
-      host: nextcloud-database-rw.cloud.svc.cluster.local
+      host: nextcloud-database-rw.nextcloud.svc.cluster.local
       database: nextcloud
       existingSecret:
         enabled: true
@@ -91,7 +91,7 @@ spec:
             'trusted_domains' =>
             array (
               0 => 'cloud.${DOMAIN}',
-              1 => 'nextcloud.cloud.svc.cluster.local',
+              1 => 'nextcloud.nextcloud.svc.cluster.local',
             ),
             'overwrite.cli.url' => 'https://cloud.${DOMAIN}',
             'overwriteprotocol' => 'https',
