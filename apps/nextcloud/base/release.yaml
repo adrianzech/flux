@@ -95,6 +95,7 @@ spec:
             ),
             'overwrite.cli.url' => 'https://cloud.${DOMAIN}',
             'overwriteprotocol' => 'https',
+            'serverid' => 1,
             'trusted_proxies' =>
             array (
               0 => '10.0.0.0/8',
