@@ -8,7 +8,7 @@ spec:
   timeout: 20m
   dependsOn:
     - name: collabora
-      namespace: cloud
+      namespace: nextcloud
   chart:
     spec:
       chart: nextcloud
