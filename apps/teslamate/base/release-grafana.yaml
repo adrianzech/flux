@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: teslamate/grafana
-              tag: "2.2.0"
+              tag: "3.0.0"
             resources:
               requests:
                 cpu: 150m
