@@ -29,7 +29,7 @@ spec:
           app:
             image:
               repository: teslamate/teslamate
-              tag: "2.2.0"
+              tag: "3.0.0"
             env:
               - name: DATABASE_HOST
                 value: teslamate-database-rw.productivity.svc.cluster.local
