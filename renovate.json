@@ -1,6 +1,13 @@
 {
   "extends": ["config:recommended"],
   "enabledManagers": ["flux", "kubernetes", "helm-values", "custom.regex"],
+  "flux": {
+    "managerFilePatterns": [
+      "/^apps\\/.*\\/base\\/release.*\\.ya?ml$/",
+      "/^infrastructure\\/.*\\/base\\/.*\\/release.*\\.ya?ml$/",
+      "/^infrastructure\\/base\\/sources\\/.*-repository\\.ya?ml$/"
+    ]
+  },
   "timezone": "Europe/Vienna",
   "labels": ["dependencies", "renovate"],
   "prConcurrentLimit": 10,
