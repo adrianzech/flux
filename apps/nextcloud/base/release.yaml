@@ -106,6 +106,7 @@ spec:
             array (
               0 => 'HTTP_X_FORWARDED_FOR',
             ),
+            'allow_local_remote_servers' => true,
             'maintenance_window_start' => 3,
             'default_phone_region' => 'AT',
           );
