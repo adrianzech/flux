@@ -1,0 +1,58 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sportarr
+  namespace: media
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-media
+        namespace: media
+  values:
+    controllers:
+      sportarr:
+        containers:
+          app:
+            image:
+              repository: sportarr/sportarr
+              tag: latest
+
+            env:
+              TZ: "Europe/Vienna"
+              PUID: "1000"
+              PGID: "1000"
+              UMASK: "022"
+
+    service:
+      app:
+        controller: sportarr
+        ports:
+          http:
+            port: 1867
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: sportarr-config-pvc
+        globalMounts:
+          - path: /config
+
+      media-sports:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: nfs-media-sports-pvc
+        globalMounts:
+          - path: /sports
+
+      media-downloads:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: nfs-media-downloads-pvc
+        globalMounts:
+          - path: /downloads

@@ -15,6 +15,20 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: nfs-media-sports-pvc
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Ti
+  storageClassName: "nfs"
+  volumeName: nfs-media-sports
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: nfs-media-tv-pvc
   namespace: media
 spec:

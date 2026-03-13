@@ -36,6 +36,23 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  name: nfs-media-sports
+spec:
+  capacity:
+    storage: 60Ti
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "nfs"
+  nfs:
+    server: 10.0.1.30
+    path: "/mnt/user/Sports"
+  mountOptions:
+    - nfsvers=4.1
+    - tcp
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
   name: nfs-media-downloads
 spec:
   capacity:
@@ -49,4 +66,3 @@ spec:
   mountOptions:
     - nfsvers=4.1
     - tcp
-
