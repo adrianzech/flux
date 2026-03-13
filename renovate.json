@@ -11,6 +11,13 @@
   "timezone": "Europe/Vienna",
   "labels": ["dependencies", "renovate"],
   "prConcurrentLimit": 10,
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["getmeili/meilisearch"],
+      "enabled": false
+    }
+  ],
   "customManagers": [
     {
       "customType": "regex",
