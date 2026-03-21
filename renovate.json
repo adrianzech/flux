@@ -30,6 +30,30 @@
         "repository:\\s*(?<depName>[^\\s]+)\\s*\\n\\s*tag:\\s*\"?(?<currentValue>[^\"\\s]+)\"?"
       ],
       "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "Track Immich server image tag in HelmRelease values",
+      "managerFilePatterns": [
+        "/^apps\\/immich\\/base\\/release\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "server:\\s*\\n(?:\\s+.*\\n)*?\\s+image:\\s*\\n\\s+tag:\\s*\"?(?<currentValue>[^\"\\s]+)\"?"
+      ],
+      "depNameTemplate": "ghcr.io/immich-app/immich-server",
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "Track Immich machine learning image tag in HelmRelease values",
+      "managerFilePatterns": [
+        "/^apps\\/immich\\/base\\/release\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "machine-learning:\\s*\\n(?:\\s+.*\\n)*?\\s+image:\\s*\\n\\s+tag:\\s*\"?(?<currentValue>[^\"\\s]+)\"?"
+      ],
+      "depNameTemplate": "ghcr.io/immich-app/immich-machine-learning",
+      "datasourceTemplate": "docker"
     }
   ]
 }
