@@ -21,7 +21,7 @@ spec:
           app:
             image:
               repository: linuxserver/speedtest-tracker
-              tag: "1.13.11"
+              tag: "1.13.12"
             env:
               - name: DB_CONNECTION
                 value: pgsql
