@@ -75,6 +75,8 @@ spec:
     alertmanager:
       alertmanagerSpec:
         configSecret: kube-prometheus-stack-alertmanager-config
+        externalUrl: https://alerts.${DOMAIN}
+        routePrefix: /
         retention: 120h
         storage:
           volumeClaimTemplate:
