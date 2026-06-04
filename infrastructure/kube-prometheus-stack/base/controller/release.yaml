@@ -25,6 +25,9 @@ spec:
       remediateLastFailure: true
   values:
     fullnameOverride: kube-prometheus-stack
+    defaultRules:
+      disabled:
+        InfoInhibitor: true
     kubeControllerManager:
       enabled: false
     kubeProxy:
