@@ -117,7 +117,7 @@ metadata:
   name: monitoring
   labels:
     name: monitoring
-    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/enforce: privileged
 ---
 apiVersion: v1
 kind: Namespace
