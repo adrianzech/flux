@@ -59,6 +59,22 @@ spec:
 
     redis:
       enabled: true
+      master:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: "1"
+            memory: 512Mi
+      replica:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: "1"
+            memory: 512Mi
 
     externalDatabase:
       enabled: true
