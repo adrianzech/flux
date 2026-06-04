@@ -16,5 +16,6 @@ resources:
   - collabora-repository.yaml
   - metallb-repository.yaml
   - metrics-server-repository.yaml
+  - prometheus-community-repository.yaml
   - proxmox-csi-repository.yaml
   - traefik-repository.yaml

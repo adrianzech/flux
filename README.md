@@ -92,6 +92,17 @@ Format: each top-level entry is an Infisical `secretsPath` (folder); the indente
   - OAUTH_CLIENT_ID
   - OAUTH_CLIENT_SECRET
   - OPENAI_API_KEY
+/Monitoring/Grafana
+  - ADMIN_USER
+  - ADMIN_PASSWORD
+  - OAUTH_CLIENT_ID
+  - OAUTH_CLIENT_SECRET
+/Monitoring/Alertmanager
+  - SMARTHOST
+  - SMTP_FROM
+  - SMTP_USERNAME
+  - SMTP_PASSWORD
+  - EMAIL_TO
 ```
 
 ## Flux Bootstrap

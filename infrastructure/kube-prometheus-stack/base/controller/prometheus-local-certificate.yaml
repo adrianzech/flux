@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: prometheus-local-certificate
+  namespace: monitoring
+spec:
+  secretName: prometheus-local-certificate
+  issuerRef:
+    name: cloudflare-clusterissuer
+    kind: ClusterIssuer
+  dnsNames:
+    - prometheus.local.${DOMAIN}

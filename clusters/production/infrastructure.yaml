@@ -208,6 +208,38 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: prod-core-kube-prometheus-stack-controller
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: prod-vars
+    - name: prod-base
+    - name: prod-core-infisical-operator
+    - name: prod-core-traefik-config
+    - name: prod-core-cert-manager-config
+    - name: prod-core-proxmox-csi-config
+  interval: 10m
+  retryInterval: 1m
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: kube-prometheus-stack
+      namespace: monitoring
+  path: ./infrastructure/kube-prometheus-stack/base/controller
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: flux-cluster-vars
+  wait: true
+  timeout: 30m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: prod-core-metallb-config
   namespace: flux-system
 spec:
