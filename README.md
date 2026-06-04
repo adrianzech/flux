@@ -103,6 +103,8 @@ Format: each top-level entry is an Infisical `secretsPath` (folder); the indente
   - SMTP_USERNAME
   - SMTP_PASSWORD
   - EMAIL_TO
+  - PUSHOVER_USER_KEY
+  - PUSHOVER_TOKEN
 ```
 
 ## Flux Bootstrap
