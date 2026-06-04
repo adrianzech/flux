@@ -25,6 +25,13 @@ spec:
       remediateLastFailure: true
   values:
     fullnameOverride: kube-prometheus-stack
+    kubeControllerManager:
+      enabled: false
+    kubeProxy:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+
     grafana:
       admin:
         existingSecret: kube-prometheus-stack-grafana-secrets
