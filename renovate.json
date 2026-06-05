@@ -13,10 +13,11 @@
   "prConcurrentLimit": 10,
   "packageRules": [
     {
-      "description": "Automerge patch updates after checks pass",
+      "description": "Automerge patch updates",
       "matchUpdateTypes": ["patch"],
       "automerge": true,
-      "automergeType": "pr"
+      "automergeType": "pr",
+      "ignoreTests": true
     },
     {
       "matchDatasources": ["docker"],
