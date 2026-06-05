@@ -21,7 +21,7 @@ spec:
           app:
             image:
               repository: linuxserver/unifi-network-application
-              tag: "10.3.58"
+              tag: "10.4.57"
             env:
               - name: TZ
                 value: "Europe/Vienna"
