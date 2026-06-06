@@ -4,6 +4,7 @@ resources:
   - auth-limits.yaml
   - automation-limits.yaml
   - cnpg-system-limits.yaml
+  - finance-limits.yaml
   - health-limits.yaml
   - media-limits.yaml
   - monitoring-limits.yaml

@@ -27,3 +27,4 @@ resources:
   - ../healthchecks/base
   - ../changedetection/base
   - ../tracearr/base
+  - ../actualbudget/base

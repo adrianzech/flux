@@ -114,6 +114,14 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
+  name: finance
+  labels:
+    name: finance
+    pod-security.kubernetes.io/enforce: baseline
+---
+apiVersion: v1
+kind: Namespace
+metadata:
   name: monitoring
   labels:
     name: monitoring
