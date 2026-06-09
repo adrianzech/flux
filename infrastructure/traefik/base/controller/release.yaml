@@ -35,6 +35,7 @@ spec:
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+      - "--entrypoints.websecure.transport.respondingtimeouts.readtimeout=30m"
 
     deployment:
       enabled: true
