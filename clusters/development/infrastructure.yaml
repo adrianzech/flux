@@ -278,6 +278,37 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: dev-core-klarity-controller
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: dev-vars
+    - name: dev-base
+    - name: dev-core-infisical-operator
+    - name: dev-core-traefik-config
+    - name: dev-core-metrics-server-controller
+  interval: 10m
+  retryInterval: 1m
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: klarity
+      namespace: monitoring
+  path: ./infrastructure/klarity/base/controller
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: flux-cluster-vars
+  wait: true
+  timeout: 15m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: dev-core-proxmox-csi-config
   namespace: flux-system
 spec:

@@ -13,6 +13,7 @@ resources:
   - cnpg-repository.yaml
   - infisical-repository.yaml
   - immich-repository.yaml
+  - klarity-repository.yaml
   - nextcloud-repository.yaml
   - collabora-repository.yaml
   - metallb-repository.yaml
