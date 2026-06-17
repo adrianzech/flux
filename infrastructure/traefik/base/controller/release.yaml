@@ -67,11 +67,11 @@ spec:
       annotations:
         metallb.universe.tf/loadBalancerIPs: "${TRAEFIK_LB_IP}"
 
-    logs:
-      general:
-        level: INFO
-      access:
-        enabled: true
+    log:
+      level: INFO
+
+    accessLog:
+      enabled: true
 
     api:
       dashboard: true
