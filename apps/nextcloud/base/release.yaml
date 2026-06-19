@@ -7,7 +7,7 @@ spec:
   interval: 15m
   timeout: 20m
   dependsOn:
-    - name: collabora
+    - name: euro-office
       namespace: nextcloud
   chart:
     spec:

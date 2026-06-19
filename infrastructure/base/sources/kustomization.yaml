@@ -15,7 +15,6 @@ resources:
   - immich-repository.yaml
   - klarity-repository.yaml
   - nextcloud-repository.yaml
-  - collabora-repository.yaml
   - metallb-repository.yaml
   - metrics-server-repository.yaml
   - prometheus-community-repository.yaml

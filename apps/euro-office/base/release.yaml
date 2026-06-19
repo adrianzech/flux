@@ -1,0 +1,48 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: euro-office
+  namespace: nextcloud
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-productivity
+        namespace: productivity
+  values:
+    controllers:
+      euro-office:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/euro-office/documentserver
+              tag: "9.3.1"
+            resources:
+              requests:
+                cpu: 500m
+                memory: 4Gi
+              limits:
+                cpu: "2"
+                memory: 4Gi
+            env:
+              - name: JWT_ENABLED
+                value: "true"
+              - name: JWT_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: euro-office-secrets
+                    key: jwt-secret
+              - name: ALLOW_PRIVATE_IP_ADDRESS
+                value: "true"
+
+    service:
+      app:
+        controller: euro-office
+        ports:
+          http:
+            port: 80
