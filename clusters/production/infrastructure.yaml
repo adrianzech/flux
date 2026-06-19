@@ -310,6 +310,29 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: prod-traefik-routes
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: prod-vars
+    - name: prod-base
+    - name: prod-core-traefik-config
+  interval: 10m
+  retryInterval: 1m
+  path: ./infrastructure/production/traefik-routes
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: flux-cluster-vars
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: prod-core-klarity-controller
   namespace: flux-system
 spec:
