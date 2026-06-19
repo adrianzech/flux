@@ -1,0 +1,149 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: pulse-agent
+  namespace: monitoring
+spec:
+  interval: 15m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.6.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts-monitoring
+        namespace: monitoring
+  values:
+    global:
+      createDefaultServiceAccount: false
+    controllers:
+      pulse-agent:
+        type: daemonset
+        serviceAccount:
+          name: pulse-agent
+        pod:
+          automountServiceAccountToken: true
+          tolerations:
+            - operator: Exists
+        containers:
+          app:
+            image:
+              repository: rcourtman/pulse
+              tag: latest
+              pullPolicy: IfNotPresent
+            command:
+              - /opt/pulse/bin/pulse-agent-linux-amd64
+            args:
+              - --enable-kubernetes
+            env:
+              - name: PULSE_URL
+                value: https://pulse.zech.co
+              - name: PULSE_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: pulse-agent-secrets
+                    key: PULSE_TOKEN
+              - name: PULSE_AGENT_ID
+                value: prod-kubernetes
+              - name: PULSE_ENABLE_KUBERNETES
+                value: "true"
+              - name: PULSE_ENABLE_HOST
+                value: "true"
+              - name: PULSE_KUBE_INCLUDE_ALL_PODS
+                value: "true"
+              - name: PULSE_KUBE_INCLUDE_ALL_DEPLOYMENTS
+                value: "true"
+              - name: PULSE_REPORT_IP
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.hostIP
+              - name: HOST_PROC
+                value: /host/proc
+              - name: HOST_SYS
+                value: /host/sys
+              - name: HOST_ETC
+                value: /host/etc
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+            securityContext:
+              privileged: true
+              runAsUser: 0
+              runAsGroup: 0
+
+    persistence:
+      host-proc:
+        type: hostPath
+        hostPath: /proc
+        advancedMounts:
+          pulse-agent:
+            app:
+              - path: /host/proc
+                readOnly: true
+      host-sys:
+        type: hostPath
+        hostPath: /sys
+        advancedMounts:
+          pulse-agent:
+            app:
+              - path: /host/sys
+                readOnly: true
+      host-etc:
+        type: hostPath
+        hostPath: /etc
+        advancedMounts:
+          pulse-agent:
+            app:
+              - path: /host/etc
+                readOnly: true
+      host-root:
+        type: hostPath
+        hostPath: /
+        advancedMounts:
+          pulse-agent:
+            app:
+              - path: /host/root
+                readOnly: true
+
+    serviceAccount:
+      pulse-agent:
+        forceRename: pulse-agent
+
+    rbac:
+      roles:
+        pulse-agent-read:
+          type: ClusterRole
+          forceRename: pulse-agent-read
+          rules:
+            - apiGroups:
+                - ""
+              resources:
+                - nodes
+                - pods
+              verbs:
+                - get
+                - list
+                - watch
+            - apiGroups:
+                - apps
+              resources:
+                - deployments
+              verbs:
+                - get
+                - list
+                - watch
+      bindings:
+        pulse-agent-read:
+          type: ClusterRoleBinding
+          forceRename: pulse-agent-read
+          roleRef:
+            name: pulse-agent-read
+            kind: ClusterRole
+          subjects:
+            - kind: ServiceAccount
+              name: pulse-agent
+              namespace: monitoring
