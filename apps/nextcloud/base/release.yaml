@@ -89,7 +89,10 @@ spec:
 
     persistence:
       enabled: true
-      existingClaim: nfs-cloud-data-pvc
+      existingClaim: nextcloud-main-pvc
+      nextcloudData:
+        enabled: true
+        existingClaim: nfs-cloud-data-pvc
 
     nextcloud:
       host: cloud.${DOMAIN}
