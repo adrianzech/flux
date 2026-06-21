@@ -4,7 +4,7 @@ metadata:
   name: authentik-database
   namespace: auth
 spec:
-  instances: 3
+  instances: ${AUTHENTIK_DATABASE_INSTANCES:=3}
   resources:
     requests:
       cpu: 200m
