@@ -25,6 +25,7 @@ spec:
       enabled: false
 
     image:
+      repository: nextcloud
       tag: "34.0.0"
 
     startupProbe:
