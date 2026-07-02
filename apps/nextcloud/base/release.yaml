@@ -24,10 +24,6 @@ spec:
     autoscaling:
       enabled: false
 
-    image:
-      repository: nextcloud
-      tag: "34.0.1"
-
     startupProbe:
       enabled: true
       initialDelaySeconds: 10
