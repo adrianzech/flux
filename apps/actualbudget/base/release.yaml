@@ -21,7 +21,7 @@ spec:
           app:
             image:
               repository: actualbudget/actual-server
-              tag: "26.6.0"
+              tag: "26.7.0"
             env:
               - name: ACTUAL_PORT
                 value: "5006"
