@@ -16,6 +16,16 @@ spec:
       interval: 5m
   releaseName: infisical-secrets-operator
   targetNamespace: infisical
+  values:
+    controllerManager:
+      manager:
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
   install:
     remediation:
       remediateLastFailure: true
