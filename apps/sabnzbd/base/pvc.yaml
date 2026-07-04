@@ -22,5 +22,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 250Gi
+      storage: 100Gi
   storageClassName: proxmox-csi
