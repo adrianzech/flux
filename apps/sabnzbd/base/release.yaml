@@ -25,9 +25,10 @@ spec:
               tag: "5.0.4"
             resources:
               requests:
-                cpu: 250m
+                cpu: 500m
                 memory: 512Mi
               limits:
+                cpu: "4"
                 memory: 2Gi
 
             env:
@@ -55,3 +56,10 @@ spec:
         existingClaim: nfs-media-downloads-pvc
         globalMounts:
           - path: /downloads
+
+      incomplete-downloads:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: sabnzbd-incomplete-pvc
+        globalMounts:
+          - path: /incomplete-downloads
