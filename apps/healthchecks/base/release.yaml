@@ -21,7 +21,7 @@ spec:
           app:
             image:
               repository: linuxserver/healthchecks
-              tag: "4.2.20260708"
+              tag: "4.3.20260720"
             env:
               - name: TZ
                 value: Europe/Vienna
