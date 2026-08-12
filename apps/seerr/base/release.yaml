@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: seerr/seerr
-              tag: "v3.3.0"
+              tag: "v3.4.1"
 
             env:
               TZ: "Europe/Vienna"
