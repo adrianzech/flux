@@ -21,7 +21,7 @@ spec:
           app:
             image:
               repository: linuxserver/radarr
-              tag: "6.2.1"
+              tag: "6.4.4"
 
             env:
               TZ: "Europe/Vienna"
